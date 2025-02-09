@@ -1,0 +1,27 @@
+{
+    "HomePage": {
+        "title-banner-1": "FURNITURES",
+        "title-banner-2": "FUTURES!"
+    },
+    "Header": {
+        "title": "Discount up to 50% for selected items | Buy now",
+        "home": "Home",
+        "categories": "Categories",
+        "deals": "Deals",
+        "whatsNew": "What's New",
+        "delivery": "Delivery",
+        "cart": "Cart",
+        "Search": "Search for products"
+    },
+    "NotFoundPagee": {
+        "title": "Page not found",
+        "home": "Go to the home page"
+    },
+    "Navigation": {
+        "home": "Home",
+        "about": "About"
+    },
+    "Footer": {
+        "text": "This is a footer"
+    }
+}

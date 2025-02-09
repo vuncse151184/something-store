@@ -1,0 +1,27 @@
+{
+    "HomePage": {
+        "title-banner-1": "Sáng tạo không gian",
+        "title-banner-2": "Vững bền theo năm tháng!"
+    },
+    "Header": {
+        "title": "Giảm giá tới 50% cho tất cả sản phẩm | Mua hàng ngay",
+        "home": "Trang chủ",
+        "categories": "Loại sản phẩm",
+        "deals": "Săn Deal",
+        "whatsNew": "Sản phẩm mới",
+        "delivery": "Giao hàng",
+        "cart": "Giỏ hàng",
+        "Search": "Tìm kiếm sản phẩm"
+    },
+    "NotFoundPagee": {
+        "title": "Không tìm thấy",
+        "home": "Về trang chủ"
+    },
+    "Navigation": {
+        "home": "Home",
+        "about": "About"
+    },
+    "Footer": {
+        "text": "This is a footer"
+    }
+}
