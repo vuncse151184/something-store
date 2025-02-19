@@ -1,3 +1,4 @@
+"use client"
 
 import { useTranslations } from 'next-intl';
 import React, { useState, useRef, useEffect } from 'react';
@@ -6,14 +7,11 @@ import { routing } from '@/i18n/routing';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import TextPlugin from 'gsap/TextPlugin';
-import { pacifico, greatVibes, lora } from '@/fonts/font';
+import { lora } from '@/fonts/font';
 
 
 gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
-export function generateStaticParams() {
-    return routing.locales.map((locale) => ({ locale }));
-}
 
 
 export default function HomePage() {
@@ -45,7 +43,7 @@ export default function HomePage() {
                 '.scroll-fade-2',
                 //start position at the right end of the screen
                 { x: window.innerWidth, opacity: 0 }, // Start position
-                { x: window.innerWidth - 800, opacity: 1, duration: 2, ease: 'power3.out' } // End position
+                { x: window.innerWidth - 950, opacity: 1, duration: 2, ease: 'power3.out' } // End position
             );
 
             gsap.fromTo(
@@ -85,7 +83,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Title 2 */}
-                <div className="absolute bottom-20 right-[35rem]">
+                <div className="absolute bottom-20 right-[40rem]">
                     <p className={`${lora.className} w-[30rem] opacity-0 text-white text-4xl scroll-fade-2 `}>
                         {t('title-banner-2')}
                     </p>

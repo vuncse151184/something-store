@@ -2,9 +2,8 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
-import dynamic from 'next/dynamic';
-import Header from '../components/Header/page';
-import LocomotiveWrapper from "../components/LocomotiveWrapper";
+import Header from './components/Header';
+import LocomotiveWrapper from "./components/LocomotiveWrapper";
 
 export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }));
@@ -12,7 +11,7 @@ export function generateStaticParams() {
 
 interface LocaleLayoutProps {
     children: React.ReactNode;
-    params: { locale: string };
+    params: Promise<{ locale: string }>;
 }
 
 export default async function LocaleLayout({ children, params }: Readonly<LocaleLayoutProps>) {
@@ -26,7 +25,6 @@ export default async function LocaleLayout({ children, params }: Readonly<Locale
 
     return (
         <NextIntlClientProvider locale={locale} messages={messages}>
-
             <Header locale={locale} />
             <LocomotiveWrapper>
                 {children}
