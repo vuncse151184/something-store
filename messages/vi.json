@@ -1,7 +1,9 @@
 {
     "HomePage": {
-        "title-banner-1": "Sáng tạo không gian",
-        "title-banner-2": "Vững bền theo năm tháng!"
+        "title-banner-1": "Hãy để hoa giúp bạn nói những điều mà lời chưa thể tỏ.",
+        "title-banner-2": "Gửi trọn tâm tư qua từng đóa hoa.",
+        "sub-title": "Đôi lúc có những lời yêu thương ngại ngần không thể nói ra, hãy để hoa giúp bạn truyền đạt điều đó.",
+        "scroll-down": "Cuộn xuống"
     },
     "Header": {
         "title": "Giảm giá tới 50% cho tất cả sản phẩm | Mua hàng ngay",
@@ -11,7 +13,8 @@
         "whatsNew": "Sản phẩm mới",
         "delivery": "Giao hàng",
         "cart": "Giỏ hàng",
-        "Search": "Tìm kiếm sản phẩm"
+        "Search": "Tìm kiếm sản phẩm",
+        "buyButton": "Mua ngay"
     },
     "NotFoundPagee": {
         "title": "Không tìm thấy",

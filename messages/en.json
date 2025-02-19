@@ -1,7 +1,9 @@
 {
     "HomePage": {
-        "title-banner-1": "FURNITURES",
-        "title-banner-2": "FUTURES!"
+        "title-banner-1": "Flowers speak where words cannot.",
+        "title-banner-2": "Say it with flowers.",
+        "sub-title": "When words fall short, let flowers whisper the language of your heart.",
+        "scroll-down": "Scroll down"
     },
     "Header": {
         "title": "Discount up to 50% for selected items | Buy now",
@@ -11,7 +13,8 @@
         "whatsNew": "What's New",
         "delivery": "Delivery",
         "cart": "Cart",
-        "Search": "Search for products"
+        "Search": "Search for products",
+        "buyButton": "Buy a bouget"
     },
     "NotFoundPagee": {
         "title": "Page not found",

@@ -1,18 +1,27 @@
+import { Pacifico, Great_Vibes, Lora, Manrope } from "next/font/google";
+
+export const manrope = Manrope({
+    weight: '400', 
+    preload: true,
+    subsets: ['latin']
+});
 
 
-const Playwrite_VN = (props: { weight: string }) => {
-    const { weight } = props
-    return {
-        className: `font-playwrite_VN font-normal font-sans text-white text-2xl ${weight}`,
-    }
-}
+export const pacifico = Pacifico({
+    weight: '400',
+    preload: true,
+    subsets: ['latin', 'vietnamese']
+});
 
-const Pacifico = (props: { weight: string, preload: boolean, subsets: string[] }) => {
-    const { weight, preload, subsets } = props
-    return {
-        className: `font-pacifico font-normal font-sans text-white text-2xl ${weight}`,
-    }
-}
+export const greatVibes = Great_Vibes({
+    weight: '400',
+    preload: true,
+    subsets: ['latin', 'vietnamese']
+});
 
-
-export { Playwrite_VN, Pacifico }
+export const lora = Lora({
+    weight: '400',
+    style: 'italic',
+    preload: true,
+    subsets: ['latin', 'vietnamese']
+}); 
