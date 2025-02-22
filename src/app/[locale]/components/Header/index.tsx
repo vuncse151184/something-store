@@ -6,6 +6,7 @@ import { Merriweather } from 'next/font/google'
 import { Roboto_Condensed } from 'next/font/google'
 import { manrope } from '@/fonts/font'
 import { Button } from '@/components/ui/button'
+import LocalSwitcher from '../LocalSwitcher'
 
 interface NavigationItem {
     path: string;
@@ -19,8 +20,7 @@ interface NavigationBar {
     delivery: NavigationItem;
 }
 export default function Header({ locale }: { locale: string }) {
-    const getLocale = locale;
-    console.log("getLocale", getLocale);
+    const getLocale = locale; 
     const t = useTranslations('Header');
     const navigationsBar: NavigationBar = {
         'categories': {
@@ -50,7 +50,8 @@ export default function Header({ locale }: { locale: string }) {
             <div className='flex justify-between items-center  bg-transparent w-full h-[30px]'>
                 <span className={`${manrope.className} text-2xl text-white`}>Rose&More</span>
             </div>
-            <div>
+            <div className='flex space-x-6 items-center  bg-transparent  h-[30px]'>
+                <LocalSwitcher />
                 <Button variant='white' size='sm' className='px-6 rounded-3xl'> {t('buyButton')} </Button>
             </div>
         </div>
