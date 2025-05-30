@@ -26,9 +26,11 @@ export default async function LocaleLayout({ children, params }: Readonly<Locale
     return (
         <NextIntlClientProvider locale={locale} messages={messages}>
             <Header locale={locale} />
-            <LocomotiveWrapper>
+            {/* <div className="relative flex flex-col min-h-screen mx-auto overflow-x-hidden"> */}
+                <LocomotiveWrapper>
                 {children}
-            </LocomotiveWrapper>
+                </LocomotiveWrapper>
+            {/* </div> */}
         </NextIntlClientProvider>
     );
 }
