@@ -20,7 +20,7 @@ interface NavigationBar {
     delivery: NavigationItem;
 }
 export default function Header({ locale }: { locale: string }) {
-    const getLocale = locale; 
+    const getLocale = locale;
     const t = useTranslations('Header');
     const navigationsBar: NavigationBar = {
         'categories': {
@@ -43,12 +43,10 @@ export default function Header({ locale }: { locale: string }) {
 
     return (
 
-        // <div className="w-full h-[150px] fixed top-0 z-50 bg-none bg-opacity-0 " id="hide">
-        //     <div className={`flex justify-between items-center px-10  bg-[#4E6813] w-full h-[30px]`}>
 
-        <div className='bg-transparent w-full h-[150px] fixed top-0 z-50 bg-none bg-opacity-0 flex justify-between py-4 px-10'>
-            <div className='flex justify-between items-center  bg-transparent w-full h-[30px]'>
-                <span className={`${manrope.className} text-2xl text-white`}>Rose&More</span>
+        <div className='bg-transparent absolute w-full h-[150px] top-0 z-50 bg-none bg-transparent-0 flex justify-between py-4 px-10'>
+            <div className='flex justify-between items-center  bg-black/20  h-[30px] backdrop:blur-[10px]'>
+                <span className={`${manrope.className} text-2xl text-white drop-shadow-md tracking-tight`}>Rose&More</span>
             </div>
             <div className='flex space-x-6 items-center  bg-transparent  h-[30px]'>
                 <LocalSwitcher />
