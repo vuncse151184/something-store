@@ -95,31 +95,39 @@ export default function HomePage({ locale }: { locale: string }) {
   };
 
   const setupScrollAnimations = () => {
-    // Scroll snap between screens
-    ScrollTrigger.create({
-      trigger: '#screen1',
-      start: 'top top',
-      end: 'bottom top',
-      onLeave: () => {
-        scrollTo('#screen2', { duration: 1 });
-      },
-      onEnterBack: () => {
-        scrollTo('#screen1', { duration: 1 });
-      },
-    });
+    const sections = document.querySelectorAll('.screen');
+    console.log('Sections:', sections);
+    sections.forEach((section, index) => {
+      const next = sections[index + 1] as HTMLElement | undefined;
+      const prev = sections[index - 1] as HTMLElement | undefined;
 
-    // Animate screen2 images when screen2 comes into view
-    if (screen2ImagesReady) {
       ScrollTrigger.create({
-        trigger: '#screen2',
-        start: 'top 80%',
-        once: true,
-        onEnter: () => {
-          animateScreen2Images();
+        trigger: section,
+        start: 'top top',
+        end: 'bottom top',
+        onLeave: () => {
+          if (next) {
+            gsap.to(window, {
+              duration: 0.8,
+              scrollTo: { y: next.offsetTop, autoKill: false },
+              ease: 'power2.out'
+            });
+          }
         },
+        onEnterBack: () => {
+          if (prev) {
+            gsap.to(window, {
+              duration: 0.8,
+              scrollTo: { y: prev.offsetTop, autoKill: false },
+              ease: 'power2.out'
+            });
+          }
+        },
+        snap: 1,
       });
-    }
+    });
   };
+
 
   // Setup screen2 animations when images are ready
   useEffect(() => {
@@ -152,9 +160,9 @@ export default function HomePage({ locale }: { locale: string }) {
   return (
     <div className="flex flex-col w-screen h-auto min-h-screen" id="smooth-content" ref={containerRef}>
 
+      <Header locale={locale} />
       {/* Screen 1 */}
-      <div className="w-screen h-screen relative" id="screen1">
-        <Header locale={locale} />
+      <div className="screen w-screen h-screen relative" id="screen1">
         <img
           src="/images/bg-1.jpg"
           alt="background"
@@ -177,7 +185,16 @@ export default function HomePage({ locale }: { locale: string }) {
         </div>
 
         <div className="flex w-full justify-center items-center absolute bottom-2 scroll-fade-3">
-          <div className="flex flex-col items-center cursor-pointer" onClick={() => scrollTo('#screen2')}>
+          <div
+            className="flex flex-col items-center cursor-pointer"
+            onClick={() => {
+              gsap.to(window, {
+                duration: 1,
+                scrollTo: { y: '#screen2', autoKill: false },
+                ease: 'power2.out',
+              });
+            }}
+          >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="size-6">
               <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5" />
             </svg>
@@ -187,7 +204,7 @@ export default function HomePage({ locale }: { locale: string }) {
       </div>
 
       {/* Screen 2 */}
-      <div className="w-screen h-screen overflow-hidden relative" id="screen2">
+      <div className="screen w-screen h-screen overflow-hidden relative" id="screen2">
         <img
           src="/images/bg-2.jpg"
           alt="background"
@@ -211,7 +228,7 @@ export default function HomePage({ locale }: { locale: string }) {
               </div>
               <div className="flex items-center bg-black/20 bottom-2 px-10 py-2 max-h-20 w-full justify-center absolute">
                 <p
-                  className={`${lora.className} text-white text-sm line-clamp-3`}
+                  className={`${lora.className} text-white text-sm line-clamp-4`}
                 >
                   {t(`template-${index + 1}-description`)}
                 </p>
@@ -222,6 +239,6 @@ export default function HomePage({ locale }: { locale: string }) {
           ))}
         </div>
       </div>
-    </div>
+    </div >
   );
 }
