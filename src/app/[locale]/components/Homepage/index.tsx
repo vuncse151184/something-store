@@ -211,7 +211,7 @@ export default function HomePage({ locale }: { locale: string }) {
               </div>
               <div className="flex items-center bg-black/20 bottom-2 px-10 py-2 max-h-20 w-full justify-center absolute">
                 <p
-                  className={`${lora.className} text-white text-sm line-clamp-4`}
+                  className={`${lora.className} text-white text-sm line-clamp-3`}
                 >
                   {t(`template-${index + 1}-description`)}
                 </p>

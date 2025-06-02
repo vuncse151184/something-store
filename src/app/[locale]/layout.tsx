@@ -3,34 +3,27 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import Header from './components/Header';
-// import LocomotiveWrapper from "./components/GSAPSmoothWrapper";
+// import GSAPSmoothWrapper from './components/GSAPSmoothWrapper';
 
 export function generateStaticParams() {
-    return routing.locales.map((locale) => ({ locale }));
+  return routing.locales.map((locale) => ({ locale }));
 }
-
 interface LocaleLayoutProps {
-    children: React.ReactNode;
-    params: Promise<{ locale: string }>;
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }
 
-export default async function LocaleLayout({ children, params }: Readonly<LocaleLayoutProps>) {
-    const { locale } = await params;
-    const messages = await getMessages();
+export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
+  const { locale } = await params;
+  const messages = await getMessages({ locale });
 
-    // Ensure locale is valid
-    if (!routing.locales.includes(locale as any)) {
-        notFound();
-    }
+  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
+    notFound();
+  }
 
-    return (
-        <NextIntlClientProvider locale={locale} messages={messages}>
-      
-            {/* <div className="relative flex flex-col min-h-screen mx-auto overflow-x-hidden"> */}
-                {/* <LocomotiveWrapper> */}
-                {children}
-                {/* </LocomotiveWrapper> */}
-            {/* </div> */}
-        </NextIntlClientProvider>
-    );
+  return (
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      {children}
+    </NextIntlClientProvider>
+  );
 }

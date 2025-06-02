@@ -1,11 +1,13 @@
-"use client";
-import dynamic from "next/dynamic";
+'use client';
 
-// Trì hoãn render và tắt SSR cho HomePage (vì LocomotiveScroll dùng window/document)
+import { use } from 'react';
+import dynamic from 'next/dynamic';
+
 const HomePage = dynamic(() => import('@/app/[locale]/components/Homepage'), {
   ssr: false,
 });
 
-export default function page({ locale }: { locale: string }) {
-  return <HomePage locale={locale} />;
+export default function Page({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = use(params); // ✅ unwrap Promise per Next.js 15+
+  return <HomePage locale={locale} />; // 👈 truyền locale nếu cần
 }
