@@ -6,6 +6,6 @@ const HomePage = dynamic(() => import('@/app/[locale]/components/Homepage'), {
   ssr: false,
 });
 
-export default function page() {
-  return <HomePage />;
+export default function page({ locale }: { locale: string }) {
+  return <HomePage locale={locale} />;
 }
