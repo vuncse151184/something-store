@@ -1,0 +1,3 @@
+.scroll-fade-1, .scroll-fade-2, .scroll-fade-3, .effect-flip {
+  will-change: transform, opacity;
+}

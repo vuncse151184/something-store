@@ -6,7 +6,7 @@ import { useGSAPScroll } from './../GSAPSmoothWrapper';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import TextPlugin from 'gsap/TextPlugin';
-
+import Image from 'next/image';
 import { lora } from '@/fonts/font';
 import './index.css';
 import Header from '../Header';
@@ -15,94 +15,77 @@ import { Button } from '@/components/ui/button';
 gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
 export default function HomePage({ locale }: { locale: string }) {
-  const containerRef = useRef(null);
-  const textRef = useRef(null);
-  const animationsInitialized = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLParagraphElement>(null);
   const t = useTranslations('HomePage');
   const c = useTranslations('Header');
   const { scrollTo } = useGSAPScroll();
 
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [screen2ImagesReady, setScreen2ImagesReady] = useState(false);
+  const [isBgLoaded, setIsBgLoaded] = useState(false);
 
-  // Optimized image load handler
-  const handleImageLoad = useCallback(() => {
-    setIsImageLoaded(true);
-  }, []);
+  // Only run animations after images are loaded and browser is idle
+  useEffect(() => {
+    if (!isBgLoaded) return;
+    const runAnimations = () => {
+      animateIntroContent();
+      setupScrollAnimations();
+    };
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(runAnimations);
+    } else {
+      setTimeout(runAnimations, 100);
+    }
+  }, [isBgLoaded, t]);
 
-  // Optimized intro animation with better performance
   const animateIntroContent = useCallback(() => {
-    // Use a timeline for better performance
     const tl = gsap.timeline();
-    
-    tl.fromTo('.scroll-fade-1', 
-      { x: -10, opacity: 0 }, 
-      { x: 40, opacity: 1, duration: 1.5, ease: 'power2.out' }
-    )
-    .fromTo('.scroll-fade-2', 
-      { y: 40, opacity: 0 }, 
-      { y: 0, opacity: 1, duration: 1.5, ease: 'power2.out' }, 
-      '-=1.2'
-    )
-    .fromTo('.scroll-fade-3', 
-      { y: 40, opacity: 0 }, 
-      { y: 0, opacity: 1, duration: 1.5, ease: 'power2.out' }, 
-      '-=1.2'
-    );
-
-    // Optimize text animation
+    tl.fromTo('.scroll-fade-1', { x: -10, opacity: 0 }, { x: 40, opacity: 1, duration: 1.2, ease: 'power2.out' })
+      .fromTo('.scroll-fade-2', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, ease: 'power2.out' }, '-=1')
+      .fromTo('.scroll-fade-3', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, ease: 'power2.out' }, '-=1');
     if (textRef.current) {
       gsap.to(textRef.current, {
         text: t('sub-title'),
-        duration: 2.5, // Reduced from 4
+        duration: 2,
         ease: 'none',
-        delay: 0.3,
+        delay: 0.2,
         opacity: 1,
       });
     }
-
-    // Optimize flip animation
     gsap.to('.effect-flip', {
       rotationY: 180,
-      duration: 1.2, // Reduced from 1.5
+      duration: 1,
       ease: 'power2.out',
     });
   }, [t]);
 
-  // Simplified and optimized scroll animations
   const setupScrollAnimations = useCallback(() => {
-    if (animationsInitialized.current) return;
-    
     const sections = document.querySelectorAll('.screen');
-    
-    // Use more efficient scroll handling
     sections.forEach((section, index) => {
       const next = sections[index + 1] as HTMLElement | undefined;
       const prev = sections[index - 1] as HTMLElement | undefined;
-
       ScrollTrigger.create({
         trigger: section,
         start: 'top top',
         end: 'bottom top',
-        fastScrollEnd: true, // Optimize for fast scrolling
-        preventOverlaps: true, // Prevent animation overlaps
+        fastScrollEnd: true,
+        preventOverlaps: true,
         onLeave: () => {
           if (next) {
             gsap.to(window, {
-              duration: 0.6, // Reduced from 0.8
+              duration: 0.6,
               scrollTo: { y: next.offsetTop, autoKill: false },
               ease: 'power2.out',
-              overwrite: 'auto' // Prevent animation conflicts
+              overwrite: 'auto'
             });
           }
         },
         onEnterBack: () => {
           if (prev) {
             gsap.to(window, {
-              duration: 0.6, // Reduced from 0.8
+              duration: 0.6,
               scrollTo: { y: prev.offsetTop, autoKill: false },
               ease: 'power2.out',
-              overwrite: 'auto' // Prevent animation conflicts
+              overwrite: 'auto'
             });
           }
         },
@@ -113,109 +96,35 @@ export default function HomePage({ locale }: { locale: string }) {
         },
       });
     });
-    
-    animationsInitialized.current = true;
+    // Animate screen2 images when they enter viewport
+    ScrollTrigger.create({
+      trigger: '#screen2',
+      start: 'top 80%',
+      once: true,
+      fastScrollEnd: true,
+      onEnter: animateScreen2Images,
+    });
   }, []);
 
-  // Optimized screen2 animation
   const animateScreen2Images = useCallback(() => {
     const images = gsap.utils.toArray('[id^="image-screen2-"]');
     if (!images.length) return;
-
-    // Use more efficient animation approach
-    const tl = gsap.timeline();
-    
-    gsap.set(images, { 
-      y: 300, // Reduced from 800 for less dramatic movement
-      opacity: 0,
-      scale: 0.95 // Add subtle scale for smoother appearance
-    });
-    
-    tl.to(images, {
+    gsap.set(images, { y: 200, opacity: 0, scale: 0.97 });
+    gsap.to(images, {
       y: 0,
       opacity: 1,
       scale: 1,
-      duration: 1.8, // Reduced from 2.5
+      duration: 1.2,
       ease: 'power2.out',
-      stagger: 0.3, // Reduced from 0.5
-      force3D: true, // Force hardware acceleration
+      stagger: 0.2,
+      force3D: true,
     });
   }, []);
 
-  // Optimized image loading check for screen2
-  useEffect(() => {
-    const screen2 = document.getElementById('screen2');
-    if (!screen2) return;
-
-    const images = Array.from(screen2.querySelectorAll('img'));
-    if (images.length === 0) {
-      setScreen2ImagesReady(true);
-      return;
-    }
-
-    let loadedCount = 0;
-    const checkLoaded = () => {
-      loadedCount++;
-      if (loadedCount === images.length) {
-        setScreen2ImagesReady(true);
-      }
-    };
-
-    // Use requestIdleCallback for better performance
-    const processImages = () => {
-      images.forEach((img) => {
-        if (img.complete) {
-          checkLoaded();
-        } else {
-          img.addEventListener('load', checkLoaded, { once: true });
-          img.addEventListener('error', checkLoaded, { once: true });
-        }
-      });
-    };
-
-    if (window.requestIdleCallback) {
-      window.requestIdleCallback(processImages);
-    } else {
-      setTimeout(processImages, 0);
-    }
-
-    return () => {
-      images.forEach((img) => {
-        img.removeEventListener('load', checkLoaded);
-        img.removeEventListener('error', checkLoaded);
-      });
-    };
-  }, []);
-
-  // Setup animations with debouncing
-  useEffect(() => {
-    if (!isImageLoaded) return;
-
-    const timer = setTimeout(() => {
-      animateIntroContent();
-      setupScrollAnimations();
-    }, 100); // Reduced delay
-
-    return () => clearTimeout(timer);
-  }, [isImageLoaded, animateIntroContent, setupScrollAnimations]);
-
-  // Setup screen2 animations when ready
-  useEffect(() => {
-    if (screen2ImagesReady && isImageLoaded) {
-      ScrollTrigger.create({
-        trigger: '#screen2',
-        start: 'top 80%',
-        once: true,
-        fastScrollEnd: true,
-        onEnter: animateScreen2Images,
-      });
-    }
-  }, [screen2ImagesReady, isImageLoaded, animateScreen2Images]);
-
-  // Smooth scroll handler with throttling
+  // Smooth scroll handler
   const handleSmoothScroll = useCallback((targetId: string) => {
     gsap.to(window, {
-      duration: 1.2, // Reduced from 1.5
+      duration: 1,
       scrollTo: { y: targetId, autoKill: false },
       ease: 'power2.out',
       overwrite: 'auto'
@@ -225,17 +134,19 @@ export default function HomePage({ locale }: { locale: string }) {
   return (
     <div className="flex flex-col w-screen h-auto min-h-screen" id="smooth-content" ref={containerRef}>
       <Header locale={locale} />
-      
+
       {/* Screen 1 */}
       <div className="screen w-screen h-screen relative" id="screen1">
-        <img
+        <Image
           src="/images/bg-1.jpg"
           alt="background"
-          className={`absolute effect-flip w-full space-x-reverse h-full object-cover object-center -z-10 transition-opacity duration-300 ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`}
-          onLoad={handleImageLoad}
-          loading="eager" // Prioritize loading
+          className={`absolute effect-flip w-full h-full object-cover object-center -z-10 transition-opacity duration-300 will-change-transform will-change-opacity ${isBgLoaded ? 'opacity-100' : 'opacity-0'}`}
+          onLoad={() => setIsBgLoaded(true)}
+          fill
+          priority
+          sizes="100vw"
         />
-        {isImageLoaded && <div className="absolute w-full h-full bg-black/50 -z-5" />}
+        {isBgLoaded && <div className="absolute w-full h-full bg-black/50 -z-5" />}
 
         <div className="absolute mt-[150px] ml-10">
           <p className={`${lora.className} opacity-0 w-[450px] text-white text-4xl scroll-fade-1`}>
@@ -265,22 +176,26 @@ export default function HomePage({ locale }: { locale: string }) {
 
       {/* Screen 2 */}
       <div className="screen w-screen h-screen overflow-hidden relative" id="screen2">
-        <img
+        <Image
           src="/images/bg-2.jpg"
           alt="background"
-          className={`absolute effect-flip w-auto h-screen object-cover object-center -z-10 transition-opacity duration-300 ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`}
-          loading="lazy" // Lazy load for better performance
+          className="absolute effect-flip w-auto h-screen object-cover object-center -z-10 transition-opacity duration-300 will-change-transform will-change-opacity"
+          loading="lazy"
+          fill
+          sizes="100vw"
         />
         <div className="absolute w-full h-screen bg-black/50 -z-5" />
 
         <div className="grid grid-cols-4 relative h-screen w-screen">
           {Array.from({ length: 4 }).map((_, index) => (
             <div key={index} className="col-span-1 w-auto h-full border overflow-hidden border-black relative" id={`image-screen2-${index}`}>
-              <img
+              <Image
                 src={`/images/template/template${index + 1}.jpg`}
                 alt={`background-${index}`}
-                className="w-full h-full object-cover object-center  hover:scale-110 transition-transform duration-300"
-                loading="lazy" // Lazy load template images
+                className="w-full h-full object-cover object-center hover:scale-110 transition-transform duration-300"
+                loading="lazy"
+                fill
+                sizes="25vw"
               />
               <div className="flex items-center px-2 max-w-[70%] w-fit bg-black/30 top-12 justify-center absolute">
                 <p className={`${lora.className} text-white text-2xl italic uppercase`}>
