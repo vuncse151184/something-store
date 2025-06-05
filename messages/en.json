@@ -35,5 +35,25 @@
     },
     "Footer": {
         "text": "This is a footer"
+    },
+    "ErrorPage": {
+        "title": "An error occurred",
+        "message": "Please try again later or contact support.",
+        "404": "Page not found",
+        "404-Title": "The page you were looking for doesn't exist"
+    },
+    "AboutUs": {
+        "title": "About Us",
+        "slogan": "Where Every Rose Tells a Love Story.",
+        "story-title": "Our Story",
+        "story-description": "Founded in 2005, Rose&Moré began as a small boutique in the heart of the city with a vision to create timeless fashion that celebrates individuality and sustainability. What started as a passion project between two friends has grown into an internationally recognized brand with a commitment to ethical practices and exceptional quality.",
+        "why-choose-us": "Why choose us?",
+        "quality-flowers": "Flowers of the highest quality",
+        "quality-flowers-description": "We source our flowers from the best growers around the world, ensuring that every bouquet is fresh, vibrant, and long-lasting.",
+        "fast-delivery": "Fast and reliable delivery",
+        "fast-delivery-description": "We offer same-day delivery in many areas, ensuring your flowers arrive on time and in perfect condition.",
+        "customer-service": "Exceptional customer service",
+        "customer-service-description": "Our dedicated team is here to assist you with any questions or concerns, providing personalized service to make your experience memorable.",
+        "contact-us": "Liên hệ với chúng tôi"
     }
 }

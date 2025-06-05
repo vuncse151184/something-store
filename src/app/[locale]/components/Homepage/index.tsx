@@ -22,6 +22,8 @@ export default function HomePage({ locale }: { locale: string }) {
   const { scrollTo } = useGSAPScroll();
 
   const [isBgLoaded, setIsBgLoaded] = useState(false);
+  // Add state to store ScrollTrigger instances
+  const [scrollTriggers, setScrollTriggers] = useState<ScrollTrigger[]>([]);
 
   // Only run animations after images are loaded and browser is idle
   useEffect(() => {
@@ -59,11 +61,17 @@ export default function HomePage({ locale }: { locale: string }) {
   }, [t]);
 
   const setupScrollAnimations = useCallback(() => {
-    const sections = document.querySelectorAll('.screen');
+    const sections = containerRef.current?.querySelectorAll('.screenAnimate');
+
+    if (!sections || sections.length === 0) return;
+
+    const triggers: ScrollTrigger[] = [];
+
     sections.forEach((section, index) => {
       const next = sections[index + 1] as HTMLElement | undefined;
       const prev = sections[index - 1] as HTMLElement | undefined;
-      ScrollTrigger.create({
+
+      const trigger = ScrollTrigger.create({
         trigger: section,
         start: 'top top',
         end: 'bottom top',
@@ -95,16 +103,32 @@ export default function HomePage({ locale }: { locale: string }) {
           delay: 0.1
         },
       });
+
+      triggers.push(trigger);
     });
-    // Animate screen2 images when they enter viewport
-    ScrollTrigger.create({
-      trigger: '#screen2',
-      start: 'top 80%',
-      once: true,
-      fastScrollEnd: true,
-      onEnter: animateScreen2Images,
-    });
+
+    // Screen2 animation trigger
+    const screen2 = containerRef.current?.querySelector('#screen2');
+    if (screen2) {
+      const screen2Trigger = ScrollTrigger.create({
+        trigger: screen2,
+        start: 'top 80%',
+        once: true,
+        fastScrollEnd: true,
+        onEnter: animateScreen2Images,
+      });
+      triggers.push(screen2Trigger);
+    }
+
+    setScrollTriggers(triggers);
   }, []);
+
+  // Cleanup effect
+  useEffect(() => {
+    return () => {
+      scrollTriggers.forEach(trigger => trigger.kill());
+    };
+  }, [scrollTriggers]);
 
   const animateScreen2Images = useCallback(() => {
     const images = gsap.utils.toArray('[id^="image-screen2-"]');
@@ -133,10 +157,8 @@ export default function HomePage({ locale }: { locale: string }) {
 
   return (
     <div className="flex flex-col w-screen h-auto min-h-screen" id="smooth-content" ref={containerRef}>
-      <Header locale={locale} />
-
       {/* Screen 1 */}
-      <div className="screen w-screen h-screen relative" id="screen1">
+      <div className="screenAnimate w-screen h-screen relative" id="screen1">
         <Image
           src="/images/bg-1.jpg"
           alt="background"
@@ -175,7 +197,7 @@ export default function HomePage({ locale }: { locale: string }) {
       </div>
 
       {/* Screen 2 */}
-      <div className="screen w-screen h-screen overflow-hidden relative" id="screen2">
+      <div className="screenAnimate w-screen h-screen overflow-hidden relative" id="screen2">
         <Image
           src="/images/bg-2.jpg"
           alt="background"

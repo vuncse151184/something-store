@@ -35,5 +35,27 @@
     },
     "Footer": {
         "text": "This is a footer"
+    },
+    "ErrorPage": {
+        "title": "An error occurred",
+        "message": "Please try again later or contact support.",
+        "404": "Không tìm thấy trang",
+        "404-Title": "Trang bạn đang tìm kiếm không tồn tại"
+    },
+    "AboutUs": {
+        "title": "Về Chúng Tôi",
+        "slogan": "Nơi những bông hoa kể câu chuyện của tình yêu.",
+        "story-title": "Câu chuyện của chúng tôi",
+        "story-description": "Chúng tôi bắt đầu hành trình này với niềm đam mê mang lại niềm vui và hạnh phúc cho mọi người thông qua những bông hoa tươi đẹp. Từ những ngày đầu, chúng tôi đã cam kết cung cấp những sản phẩm chất lượng cao nhất và dịch vụ tận tâm nhất đến tay khách hàng.",
+        "description": "Chúng tôi là một cửa hàng hoa trực tuyến, chuyên cung cấp những bó hoa tươi đẹp nhất cho mọi dịp lễ và sự kiện. Với sứ mệnh mang lại niềm vui và hạnh phúc qua từng bông hoa, chúng tôi cam kết mang đến cho khách hàng những sản phẩm chất lượng cao và dịch vụ tận tâm nhất.",
+        "why-choose-us": "Tại sao chọn chúng tôi?",
+        "WCU-1": "Hoa tươi chất lượng",
+        "WCU-des-1": "Cam kết cung cấp những bông hoa tươi đẹp, được chọn lọc kỹ lưỡng.",
+        "WCU-2": "Giao hàng nhanh chóng",
+        "WCU-des-2": "Cam kết giao hàng nhanh chóng và đúng hẹn.",
+        "WCU-3": "Chăm sóc khách hàng",
+        "WCU-des-3": "Sẵn sàng hỗ trợ và tư vấn để mang lại trải nghiệm mua sắm tốt nhất cho khách hàng.",
+        "contact-us": "Liên hệ với chúng tôi"
+
     }
 }

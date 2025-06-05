@@ -1,7 +1,8 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { routing } from '@/i18n/routing'; 
+import { routing } from '@/i18n/routing';
+import Header from './components/Header';
 // import GSAPSmoothWrapper from './components/GSAPSmoothWrapper';
 
 export function generateStaticParams() {
@@ -23,6 +24,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   return (
 
     <NextIntlClientProvider locale={locale} messages={messages}>
+      <Header locale={locale} />
       {children}
     </NextIntlClientProvider>
   );
