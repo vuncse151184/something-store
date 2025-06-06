@@ -5,6 +5,7 @@
 body {
   padding: 0;
   margin: 0;
+  background: black;
 }
 
 @layer base {
@@ -93,4 +94,24 @@ body {
 html {
   scrollbar-width: thin;
   scrollbar-color: #888 #f0f0f0;
+}
+
+::view-transition-group(root) {
+  z-index: auto !important;
+}
+
+::view-transition-image-pair(root) {
+  isolation: isolate;
+  will-change: none !important;
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+  animation: none !important;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+  animation: none !important;
 }
