@@ -98,8 +98,8 @@ export default function Header({ locale }: { locale: string }) {
     }
 
     return (
-        <div className='min-h-screen bg-transparent absolute w-full h-[150px] top-0 z-50 flex justify-between py-4 px-10'>
-            <div className='flex justify-between items-center h-[30px] backdrop:blur-[10px]'>
+        <div className='min-w-screen bg-transparent absolute w-full  top-0 z-50 flex justify-between py-4 px-10'>
+            <div className='flex justify-between items-center   backdrop:blur-[10px]'>
                 <span className={`${manrope.className} text-2xl text-white drop-shadow-md tracking-tight`}>Rose&Moré</span>
             </div>
             <div className='hidden lg:flex space-x-6 w-full justify-end items-start pr-32'>
