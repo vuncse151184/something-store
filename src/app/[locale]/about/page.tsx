@@ -28,7 +28,7 @@ export default function AboutPage() {
                     {/* About Content */}
                     <div className="bg-black/50 backdrop-blur-sm p-8 md:p-12 rounded-lg mb-16">
                         <h2 className="text-rose-400 text-3xl font-semibold mb-6">{t('story-title')}</h2>
-                        <p className="text-white mb-6 leading-relaxed">
+                        <p className="text-white mb-6 leading-loose">
                             {t('story-description')}
                         </p>
 
