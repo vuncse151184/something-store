@@ -135,7 +135,7 @@ export default function ChatInterface() {
                     {message.role === "user" ? "You" : "Bouquet Advisor"}
                   </p>
                   <div className="prose prose-sm max-w-none prose-invert">
-                    <p className="text-gray-300">{message.content}</p>
+                    <p className="text-gray-300 text-sm">{message.content}</p>
                   </div>
                 </div>
               </div>
