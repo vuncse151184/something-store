@@ -6,7 +6,12 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Sparkles, Heart, Leaf, Grid3X3, Grid2X2, LayoutGrid } from "lucide-react"
 import clsx from "clsx"
-
+import Header from "../components/Header"
+import { use } from "react"
+import Link from "next/link"
+import FloatingChatButton from "../components/floating-chat-button"
+import ChatInterface from "../components/chat-interface"
+import FloatingChat from "../components/floating-chat"
 interface Flower {
     id: number
     name: string
@@ -115,11 +120,17 @@ const categories = ["All", "Classic", "Pure", "Gentle", "Joyful", "Mystical", "E
 
 type ViewMode = "grid-2" | "grid-3" | "grid-4"
 
-export default function FlowerShowcase() {
+export default function FlowerShowcase({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = use(params) // Unwrap the Promise to get the locale
     const [selectedCategory, setSelectedCategory] = useState("All")
     const [viewMode, setViewMode] = useState<ViewMode>("grid-3")
     const [favorites, setFavorites] = useState<number[]>([])
+    const [isOpen, setIsOpen] = useState(false)
 
+    const toggleChat = () => {
+        setIsOpen((prev) => !prev)
+
+    }
     const headerRef = useRef(null)
     const isHeaderInView = useInView(headerRef, { once: true })
 
@@ -144,11 +155,12 @@ export default function FlowerShowcase() {
                 "md:grid-cols-3 lg:grid-cols-4": viewMode === "grid-4"
             }
         )
-
+    console.log("LOcale", locale)
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-purple-900">
             {/* Header Section */}
-           <div className="py-12"/>
+            <Header locale={locale} />
+            <div className="py-12" />
 
             {/* Controls */}
             <div className="container mx-auto px-4 mb-8">
@@ -172,24 +184,36 @@ export default function FlowerShowcase() {
                 </div>
 
                 {/* Category Filter */}
-                <div className="flex flex-wrap justify-center gap-2 mb-8">
-                    {categories.map((category) => (
-                        <Button
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6, delay: 1 }}
+                    className="flex flex-wrap justify-center gap-3 px-4 mb-16"
+                >
+                    {categories.map((category, index) => (
+                        <motion.div
                             key={category}
-                            variant={selectedCategory === category ? "default" : "outline"}
-                            size="sm"
-                            onClick={() => setSelectedCategory(category)}
-                            className={clsx(
-                                "rounded-full px-4 py-2 text-sm",
-                                selectedCategory === category
-                                    ? "bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600"
-                                    : "bg-gray-800/50 border-gray-600 text-gray-300 hover:bg-rose-500/20 hover:border-rose-400"
-                            )}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 1.2 + index * 0.1 }}
                         >
-                            {category}
-                        </Button>
+                            <Button
+                                key={category}
+                                variant={selectedCategory === category ? "default" : "outline"}
+                                size="sm"
+                                onClick={() => setSelectedCategory(category)}
+                                className={clsx(
+                                    "rounded-full px-4 py-2 text-sm",
+                                    selectedCategory === category
+                                        ? "bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600"
+                                        : "bg-gray-800/50 border-gray-600 text-gray-300 hover:bg-rose-500/20 hover:border-rose-400"
+                                )}
+                            >
+                                {category}
+                            </Button>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
 
             {/* Flower Grid */}
@@ -208,6 +232,7 @@ export default function FlowerShowcase() {
                                 <FlowerCard
                                     rose={rose}
                                     index={index}
+                                    locale={locale}
                                     isFavorite={favorites.includes(rose.id)}
                                     onToggleFavorite={() => toggleFavorite(rose.id)}
                                 />
@@ -215,19 +240,24 @@ export default function FlowerShowcase() {
                         ))}
                     </AnimatePresence>
                 </div>
+
+                <div className="fixed bottom-10 right-0 ">
+                    <FloatingChat />
+                </div>
             </div>
-        </div>
+        </div >
     )
 }
 
 interface FlowerCardProps {
     rose: Flower
     index: number
+    locale: string
     isFavorite: boolean
     onToggleFavorite: () => void
 }
 
-function FlowerCard({ rose, index, isFavorite, onToggleFavorite }: FlowerCardProps) {
+function FlowerCard({ rose, index, locale, isFavorite, onToggleFavorite }: FlowerCardProps) {
     const cardRef = useRef(null)
     const isInView = useInView(cardRef, { once: true, margin: "-50px" })
 
@@ -239,30 +269,16 @@ function FlowerCard({ rose, index, isFavorite, onToggleFavorite }: FlowerCardPro
             transition={{ duration: 0.5, delay: index * 0.05 }}
             className="group"
         >
-            <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 hover:bg-gray-800/60">
-                {/* Oval Image Container */}
-                <div className="relative mb-4">
-                    <div className="w-full aspect-square max-w-48 mx-auto relative">
-                        {/* Decorative ring */}
-                        <div
-                            className="absolute inset-0 rounded-full opacity-20"
-                            style={{
-                                background: `conic-gradient(from 0deg, ${rose.color === "Crimson Red"
-                                    ? "#ef4444"
-                                    : rose.color === "Pure White"
-                                        ? "#f8fafc"
-                                        : rose.color === "Soft Pink"
-                                            ? "#f472b6"
-                                            : rose.color === "Sunny Yellow"
-                                                ? "#facc15"
-                                                : rose.color === "Royal Purple"
-                                                    ? "#a855f7"
-                                                    : rose.color === "Vibrant Orange"
-                                                        ? "#f97316"
-                                                        : rose.color === "Deep Black"
-                                                            ? "#1f2937"
-                                                            : "#fb923c"
-                                    }40, transparent, ${rose.color === "Crimson Red"
+            <Link href={`/${locale}/bouquet/1`}>
+                <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 hover:border-gray-600/50 transition-all duration-300 hover:bg-gray-800/60">
+                    {/* Oval Image Container */}
+                    <div className="relative mb-4">
+                        <div className="w-full aspect-square max-w-48 mx-auto relative">
+                            {/* Decorative ring */}
+                            <div
+                                className="absolute inset-0 rounded-full opacity-20"
+                                style={{
+                                    background: `conic-gradient(from 0deg, ${rose.color === "Crimson Red"
                                         ? "#ef4444"
                                         : rose.color === "Pure White"
                                             ? "#f8fafc"
@@ -277,78 +293,10 @@ function FlowerCard({ rose, index, isFavorite, onToggleFavorite }: FlowerCardPro
                                                             : rose.color === "Deep Black"
                                                                 ? "#1f2937"
                                                                 : "#fb923c"
-                                    }40)`,
-                            }}
-                        />
-
-                        {/* Main oval container */}
-                        <div className="absolute inset-2 rounded-full overflow-hidden bg-gray-700/50 border-2 border-gray-600">
-                            <img src={rose.image || "/placeholder.svg"} alt={rose.name} className="w-full h-full object-cover" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                        </div>
-
-                        {/* Favorite button */}
-                        <button
-                            onClick={onToggleFavorite}
-                            className="absolute top-0 right-0 w-8 h-8 bg-gray-800/80 backdrop-blur-sm rounded-full flex items-center justify-center border border-gray-600 hover:bg-gray-700/80 transition-colors"
-                        >
-                            <Heart
-                                className={`h-4 w-4 transition-colors ${isFavorite ? "fill-rose-500 text-rose-500" : "text-gray-400 hover:text-rose-400"
-                                    }`}
-                            />
-                        </button>
-
-                        {/* Floating elements */}
-                        <div className="absolute -top-1 -left-1 w-6 h-6 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
-                            <Sparkles className="h-3 w-3 text-white" />
-                        </div>
-                        <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-gradient-to-br from-green-400 to-emerald-400 rounded-full flex items-center justify-center">
-                            <Leaf className="h-2.5 w-2.5 text-white" />
-                        </div>
-                    </div>
-                </div>
-
-                {/* Content */}
-                <div className="text-center space-y-3">
-                    <div className="space-y-1">
-                        <Badge
-                            className={`text-xs px-2 py-1 ${rose.category === "Classic"
-                                ? "bg-red-900/50 text-red-300 border border-red-700/50"
-                                : rose.category === "Pure"
-                                    ? "bg-gray-700/50 text-gray-300 border border-gray-600/50"
-                                    : rose.category === "Gentle"
-                                        ? "bg-pink-900/50 text-pink-300 border border-pink-700/50"
-                                        : rose.category === "Joyful"
-                                            ? "bg-yellow-900/50 text-yellow-300 border border-yellow-700/50"
-                                            : rose.category === "Mystical"
-                                                ? "bg-purple-900/50 text-purple-300 border border-purple-700/50"
-                                                : rose.category === "Energetic"
-                                                    ? "bg-orange-900/50 text-orange-300 border border-orange-700/50"
-                                                    : rose.category === "Dramatic"
-                                                        ? "bg-gray-900/80 text-gray-200 border border-gray-600/50"
-                                                        : "bg-orange-900/50 text-orange-300 border border-orange-700/50"
-                                }`}
-                        >
-                            {rose.category}
-                        </Badge>
-
-                        <h3 className="text-xl font-bold text-white group-hover:text-rose-300 transition-colors">{rose.name}</h3>
-
-                        <p className="text-sm font-medium bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent">
-                            {rose.meaning}
-                        </p>
-                    </div>
-
-                    <div className="space-y-2 text-sm">
-                        <div className="flex items-center justify-center gap-2">
-                            <div
-                                className="w-3 h-3 rounded-full border border-gray-500"
-                                style={{
-                                    backgroundColor:
-                                        rose.color === "Crimson Red"
+                                        }40, transparent, ${rose.color === "Crimson Red"
                                             ? "#ef4444"
                                             : rose.color === "Pure White"
-                                                ? "#ffffff"
+                                                ? "#f8fafc"
                                                 : rose.color === "Soft Pink"
                                                     ? "#f472b6"
                                                     : rose.color === "Sunny Yellow"
@@ -359,16 +307,102 @@ function FlowerCard({ rose, index, isFavorite, onToggleFavorite }: FlowerCardPro
                                                                 ? "#f97316"
                                                                 : rose.color === "Deep Black"
                                                                     ? "#1f2937"
-                                                                    : "#fb923c",
+                                                                    : "#fb923c"
+                                        }40)`,
                                 }}
                             />
-                            <span className="text-gray-400">{rose.emotion}</span>
+
+                            {/* Main oval container */}
+                            <div className="absolute inset-2 rounded-full overflow-hidden bg-gray-700/50 border-2 border-gray-600">
+                                <img src={rose.image || "/placeholder.svg"} alt={rose.name} className="w-full h-full object-cover" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                            </div>
+
+                            {/* Favorite button */}
+                            <button
+                                onClick={onToggleFavorite}
+                                className="absolute top-0 right-0 w-8 h-8 bg-gray-800/80 backdrop-blur-sm rounded-full flex items-center justify-center border border-gray-600 hover:bg-gray-700/80 transition-colors"
+                            >
+                                <Heart
+                                    className={`h-4 w-4 transition-colors ${isFavorite ? "fill-rose-500 text-rose-500" : "text-gray-400 hover:text-rose-400"
+                                        }`}
+                                />
+                            </button>
+
+                            {/* Floating elements */}
+                            <div className="absolute -top-1 -left-1 w-6 h-6 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
+                                <Sparkles className="h-3 w-3 text-white" />
+                            </div>
+                            <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-gradient-to-br from-green-400 to-emerald-400 rounded-full flex items-center justify-center">
+                                <Leaf className="h-2.5 w-2.5 text-white" />
+                            </div>
+                        </div>
+                    </div>
+                    {/* Content */}
+                    <div className="text-center space-y-3">
+                        <div className="space-y-1">
+                            <Badge
+                                className={`text-xs px-2 py-1 ${rose.category === "Classic"
+                                    ? "bg-red-900/50 text-red-300 border border-red-700/50"
+                                    : rose.category === "Pure"
+                                        ? "bg-gray-700/50 text-gray-300 border border-gray-600/50"
+                                        : rose.category === "Gentle"
+                                            ? "bg-pink-900/50 text-pink-300 border border-pink-700/50"
+                                            : rose.category === "Joyful"
+                                                ? "bg-yellow-900/50 text-yellow-300 border border-yellow-700/50"
+                                                : rose.category === "Mystical"
+                                                    ? "bg-purple-900/50 text-purple-300 border border-purple-700/50"
+                                                    : rose.category === "Energetic"
+                                                        ? "bg-orange-900/50 text-orange-300 border border-orange-700/50"
+                                                        : rose.category === "Dramatic"
+                                                            ? "bg-gray-900/80 text-gray-200 border border-gray-600/50"
+                                                            : "bg-orange-900/50 text-orange-300 border border-orange-700/50"
+                                    }`}
+                            >
+                                {rose.category}
+                            </Badge>
+
+                            <h3 className="text-xl font-bold text-white group-hover:text-rose-300 transition-colors">{rose.name}</h3>
+
+                            <p className="text-sm font-medium bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent">
+                                {rose.meaning}
+                            </p>
                         </div>
 
-                        <p className="text-gray-400 text-xs leading-relaxed">{rose.description}</p>
+
+
+                        <div className="space-y-2 text-sm">
+                            <div className="flex items-center justify-center gap-2">
+                                <div
+                                    className="w-3 h-3 rounded-full border border-gray-500"
+                                    style={{
+                                        backgroundColor:
+                                            rose.color === "Crimson Red"
+                                                ? "#ef4444"
+                                                : rose.color === "Pure White"
+                                                    ? "#ffffff"
+                                                    : rose.color === "Soft Pink"
+                                                        ? "#f472b6"
+                                                        : rose.color === "Sunny Yellow"
+                                                            ? "#facc15"
+                                                            : rose.color === "Royal Purple"
+                                                                ? "#a855f7"
+                                                                : rose.color === "Vibrant Orange"
+                                                                    ? "#f97316"
+                                                                    : rose.color === "Deep Black"
+                                                                        ? "#1f2937"
+                                                                        : "#fb923c",
+                                    }}
+                                />
+                                <span className="text-gray-400">{rose.emotion}</span>
+                            </div>
+
+                            <p className="text-gray-400 text-xs leading-relaxed">{rose.description}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </Link>
+
         </motion.div>
     )
 }

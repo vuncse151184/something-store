@@ -3,12 +3,16 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
 import { pacifico } from "@/fonts/font"
+import Header from "../components/Header"
+import { use } from 'react';
 
-export default function AboutPage() {
+export default function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = use(params); // Unwrap the Promise to get the locale
     const t = useTranslations("AboutUs")
     return (
-        <div className={`${pacifico.className} min-w-screen relative overflow-hidden`}>
+        <div className={`min-w-screen relative overflow-hidden`}>
             {/* Background Image */}
+            <Header locale={locale} />
             <div
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-[url('/images/errorrpage.jpg')]"
             />
@@ -17,7 +21,7 @@ export default function AboutPage() {
             <div className="absolute inset-0 bg-gray-400/10" />
 
             {/* Main Content */}
-            <div className="relative z-10 container mx-auto px-4 py-16">
+            <div className={`${pacifico.className} relative z-10 container mx-auto px-4 py-16`}>
                 <div className="max-w-4xl mx-auto pt-20">
                     {/* Page Title */}
                     <div className="text-center mb-16">

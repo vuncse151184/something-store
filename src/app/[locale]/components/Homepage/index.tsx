@@ -157,6 +157,7 @@ export default function HomePage({ locale }: { locale: string }) {
 
   return (
     <div className="flex flex-col w-screen h-auto min-h-screen" id="smooth-content" ref={containerRef}>
+      <Header locale={locale} />
       {/* Screen 1 */}
       <div className="screenAnimate w-screen h-screen relative" id="screen1">
         <Image

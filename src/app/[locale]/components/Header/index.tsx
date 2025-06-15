@@ -24,7 +24,7 @@ type NavigationBar = NavigationItem[];
 export default function Header({ locale }: { locale: string }) {
     const t = useTranslations('Header');
     const pathName = usePathname();
-    const router = useTransitionRouter();
+    const router = useTransitionRouter(); 
     const navigationsBar: NavigationBar = [
         {
             path: '',
@@ -95,12 +95,11 @@ export default function Header({ locale }: { locale: string }) {
                 pseudoElement: '::view-transition-new(root)',
             }
         );
-    }
-
+    } 
     return (
         <div className='min-w-screen bg-transparent absolute w-full  top-0 z-50 flex justify-between py-4 px-10'>
             <div className='flex justify-between items-center   backdrop:blur-[10px]'>
-                <span className={`${manrope.className} text-2xl text-white drop-shadow-md tracking-tight`}>Rose&Moré</span>
+                <span className={`${manrope.className} text-2xl text-white drop-shadow-md tracking-tight`}>Rose&More</span>
             </div>
             <div className='hidden lg:flex space-x-6 w-full justify-end items-start pr-32'>
                 <NavigationMenu className="w-full content-center align-middle">
