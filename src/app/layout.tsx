@@ -2,6 +2,9 @@ import { ViewTransitions } from 'next-view-transitions';
 import '../app/globals.css';
 import type { Metadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs'
+import dotenv from 'dotenv'
+dotenv.config()
+
 export const metadata: Metadata = {
     title: 'Rose&More',
     keywords: ['roses', 'flowers', 'bouquets', 'gifts', 'florist'],

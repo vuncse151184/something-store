@@ -15,6 +15,7 @@ type Message = {
   role: "user" | "assistant"
   content: string
   bouquets?: Bouquet[]
+  isStreaming?: boolean
 }
 
 type Bouquet = {
@@ -24,6 +25,14 @@ type Bouquet = {
   meaning: string
   image: string
   price: string
+}
+
+// Enhanced streaming state
+type StreamingState = {
+  messageId: string
+  content: string
+  bouquets: Bouquet[]
+  isAnalyzing: boolean
 }
 
 export default function ChatInterface() {
@@ -37,63 +46,211 @@ export default function ChatInterface() {
   ])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const [streamingContent, setStreamingContent] = useState("")
+  const [streamingState, setStreamingState] = useState<StreamingState | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }, [messages, streamingContent])
+  }, [messages, streamingState])
 
   // Focus input on load
   useEffect(() => {
     inputRef.current?.focus()
   }, [])
 
+  // Enhanced bouquet analysis during streaming
+  const analyzeBouquetsFromStream = (userMessage: string, streamContent: string): Bouquet[] => {
+    // Simple keyword-based analysis for real-time suggestions
+    const content = (userMessage + " " + streamContent).toLowerCase()
+    const suggestions: Bouquet[] = []
+
+    // Immediate suggestions based on keywords
+    if (content.includes('love') || content.includes('romantic') || content.includes('anniversary')) {
+      suggestions.push({
+        id: "1",
+        name: "Love's Embrace",
+        description: "A passionate arrangement of red roses and lilies",
+        meaning: "Deep love and passion",
+        image: "/placeholder.svg?height=200&width=200&text=Love's+Embrace",
+        price: "$89.99",
+      })
+    }
+
+    if (content.includes('peace') || content.includes('calm') || content.includes('tranquil')) {
+      suggestions.push({
+        id: "2",
+        name: "Peaceful Harmony",
+        description: "White lilies and blue delphiniums create a serene arrangement",
+        meaning: "Peace, tranquility, and harmony",
+        image: "/placeholder.svg?height=200&width=200&text=Peaceful+Harmony",
+        price: "$79.99",
+      })
+    }
+
+    if (content.includes('happy') || content.includes('joy') || content.includes('celebration') || content.includes('birthday')) {
+      suggestions.push({
+        id: "3",
+        name: "Joyful Celebration",
+        description: "Vibrant sunflowers and gerbera daisies",
+        meaning: "Happiness, joy, and celebration",
+        image: "/placeholder.svg?height=200&width=200&text=Joyful+Celebration",
+        price: "$69.99",
+      })
+    }
+
+    if (content.includes('sympathy') || content.includes('sorry') || content.includes('condolences')) {
+      suggestions.push({
+        id: "4",
+        name: "Sympathy & Remembrance",
+        description: "Elegant white roses and chrysanthemums",
+        meaning: "Remembrance, sympathy, and respect",
+        image: "/placeholder.svg?height=200&width=200&text=Sympathy+Remembrance",
+        price: "$84.99",
+      })
+    }
+
+    if (content.includes('new') || content.includes('beginning') || content.includes('baby') || content.includes('fresh')) {
+      suggestions.push({
+        id: "5",
+        name: "New Beginnings",
+        description: "Fresh daisies and pink tulips",
+        meaning: "New starts, innocence, and hope",
+        image: "/placeholder.svg?height=200&width=200&text=New+Beginnings",
+        price: "$74.99",
+      })
+    }
+
+    if (content.includes('thank') || content.includes('grateful') || content.includes('appreciation')) {
+      suggestions.push({
+        id: "6",
+        name: "Gratitude Bouquet",
+        description: "Pink and peach roses with eucalyptus",
+        meaning: "Thankfulness and appreciation",
+        image: "/placeholder.svg?height=200&width=200&text=Gratitude+Bouquet",
+        price: "$64.99",
+      })
+    }
+
+    // Remove duplicates and limit to 3
+    const uniqueSuggestions = suggestions.filter((item, index, self) =>
+      index === self.findIndex(t => t.id === item.id)
+    )
+
+    return uniqueSuggestions.slice(0, 3)
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!input.trim() || isLoading) return
 
-    // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
       role: "user",
       content: input.trim(),
     }
+
+    const assistantMessageId = (Date.now() + 1).toString()
+
     setMessages((prev) => [...prev, userMessage])
     setInput("")
     setIsLoading(true)
-    setStreamingContent("")
+
+    // Initialize streaming state
+    setStreamingState({
+      messageId: assistantMessageId,
+      content: "",
+      bouquets: [],
+      isAnalyzing: true
+    })
 
     try {
-      // Generate bouquet recommendations
-      const { text, bouquets } = await generateBouquetRecommendation([...messages, userMessage], (chunk) => {
-        setStreamingContent((prev) => prev + chunk)
-      })
-      console.log("Generated bouquets:", bouquets)
-      console.log("Generated text:", text)
-      // After streaming completes, add the full message
+      let accumulatedContent = ""
+      let lastBouquetUpdate = 0
+
+      const result = await generateBouquetRecommendation(
+        [...messages, userMessage],
+        (chunk) => {
+          console.log("Received chunk:", chunk) // Debug log
+          accumulatedContent += chunk
+          const now = Date.now()
+
+          // Update streaming content immediately
+          setStreamingState(prev => prev ? {
+            ...prev,
+            content: accumulatedContent
+          } : null)
+
+          // Analyze bouquets every 300ms or when significant content is added
+          if (now - lastBouquetUpdate > 300 || accumulatedContent.length % 30 === 0) {
+            const streamingBouquets = analyzeBouquetsFromStream(userMessage.content, accumulatedContent)
+
+            setStreamingState(prev => prev ? {
+              ...prev,
+              bouquets: streamingBouquets,
+              isAnalyzing: streamingBouquets.length === 0
+            } : null)
+
+            lastBouquetUpdate = now
+          }
+        }
+      )
+
+      console.log("Final result:", result) // Debug log
+
+      // Handle the result properly - it might just be text or an object
+      let finalText = ""
+      let finalBouquets: Bouquet[] = []
+
+      if (typeof result === 'string') {
+        finalText = result
+      } else if (result && typeof result === 'object') {
+        finalText = result.text || accumulatedContent || "No response generated"
+        finalBouquets = result.bouquets || []
+      } else {
+        finalText = accumulatedContent || "No response generated"
+      }
+
+      // If we don't have bouquets from the API, use the ones from streaming analysis
+      if (finalBouquets.length === 0 && streamingState?.bouquets) {
+        finalBouquets = streamingState.bouquets
+      }
+
+      console.log("Final bouquets:", finalBouquets)
+      console.log("Final text:", finalText)
+
+      // Add the complete message
       setMessages((prev) => [
         ...prev,
         {
-          id: Date.now().toString(),
+          id: assistantMessageId,
           role: "assistant",
-          content: text,
-          bouquets: bouquets,
+          content: finalText,
+          bouquets: finalBouquets,
         },
       ])
-      setStreamingContent("")
+
+      // Clear streaming state
+      setStreamingState(null)
+
     } catch (error) {
       console.error("Error generating response:", error)
+
+      // If we have accumulated content, use it
+      const fallbackContent = streamingState?.content || "Sorry, I encountered an error while finding bouquet recommendations. Please try again."
+      const fallbackBouquets = streamingState?.bouquets || []
+
       setMessages((prev) => [
         ...prev,
         {
-          id: Date.now().toString(),
+          id: assistantMessageId,
           role: "assistant",
-          content: "Sorry, I encountered an error while finding bouquet recommendations. Please try again.",
+          content: fallbackContent,
+          bouquets: fallbackBouquets,
         },
       ])
+      setStreamingState(null)
     } finally {
       setIsLoading(false)
     }
@@ -140,7 +297,7 @@ export default function ChatInterface() {
                 </div>
               </div>
 
-              {/* Bouquet suggestions */}
+              {/* Bouquet suggestions for completed messages */}
               {message.bouquets && message.bouquets.length > 0 && (
                 <div className="pl-11">
                   <div className="grid grid-cols-1 gap-3">
@@ -153,21 +310,56 @@ export default function ChatInterface() {
             </div>
           ))}
 
-          {/* Streaming message */}
-          {streamingContent && (
-            <div className="flex items-start gap-3 rounded-lg p-3 bg-gray-800/50">
-              <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full bg-pink-700">
-                <Flower2 className="h-4 w-4 text-white" />
-              </div>
-              <div className="flex-1 space-y-1">
-                <p className="text-sm font-medium text-gray-300">Bouquet Advisor</p>
-                <div className="prose prose-sm max-w-none prose-invert">
-                  <p className="text-gray-300">
-                    {streamingContent}
-                    <span className="inline-block w-1.5 h-4 ml-0.5 bg-pink-500 animate-pulse" />
-                  </p>
+          {/* Streaming message with real-time bouquet suggestions */}
+          {streamingState && (
+            <div className="space-y-4">
+              <div className="flex items-start gap-3 rounded-lg p-3 bg-gray-800/50">
+                <div className="flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full bg-pink-700">
+                  <Flower2 className="h-4 w-4 text-white" />
+                </div>
+                <div className="flex-1 space-y-1">
+                  <p className="text-sm font-medium text-gray-300">Bouquet Advisor</p>
+                  <div className="prose prose-sm max-w-none prose-invert">
+                    <p className="text-gray-300 text-sm">
+                      {streamingState.content}
+                      <span className="inline-block w-1.5 h-4 ml-0.5 bg-pink-500 animate-pulse" />
+                    </p>
+                  </div>
                 </div>
               </div>
+
+              {/* Real-time bouquet suggestions during streaming */}
+              {streamingState.bouquets.length > 0 && (
+                <div className="pl-11">
+                  <div className="mb-2 flex items-center gap-2">
+                    <span className="text-xs text-gray-400">Suggested bouquets:</span>
+                    {streamingState.isAnalyzing && (
+                      <Loader2 className="h-3 w-3 animate-spin text-pink-500" />
+                    )}
+                  </div>
+                  <div className="grid grid-cols-1 gap-3">
+                    {streamingState.bouquets.map((bouquet, index) => (
+                      <div
+                        key={bouquet.id}
+                        className="animate-in slide-in-from-left duration-300"
+                        style={{ animationDelay: `${index * 100}ms` }}
+                      >
+                        <BouquetSuggestion bouquet={bouquet} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Analysis indicator when no bouquets yet */}
+              {streamingState.bouquets.length === 0 && streamingState.isAnalyzing && (
+                <div className="pl-11">
+                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    <span>Analyzing your request for bouquet suggestions...</span>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

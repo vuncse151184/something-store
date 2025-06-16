@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { streamText } from "ai"
 import { openai } from "@ai-sdk/openai"
 
+
 export async function POST(req: NextRequest) {
     try {
         const { messages } = await req.json()
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
         })
 
         // Return the stream as a response
-        return new NextResponse(stream.toReadableStream())
+        return (stream.toDataStreamResponse())
     } catch (error) {
         console.error("Error in chat API:", error)
         return NextResponse.json({ error: "Failed to process your request" }, { status: 500 })
