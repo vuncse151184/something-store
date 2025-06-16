@@ -34,7 +34,7 @@ export default function BouquetDetail() {
             </div>
             <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 ${lora.className}`}>
                 {/* Image Gallery with Animation */}
-                <div className="relative rounded-2xl overflow-hidden bg-white shadow-lg h-[500px] md:h-[600px]">
+                <div className="relative rounded-2xl overflow-hidden bg-gray-400 shadow-lg h-[500px] md:h-[600px]">
                     <AnimatePresence mode="wait">
                         <motion.img
                             key={currentImage}

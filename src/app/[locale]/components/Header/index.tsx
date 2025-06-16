@@ -24,8 +24,8 @@ type NavigationBar = NavigationItem[];
 export default function Header({ locale }: { locale: string }) {
     const t = useTranslations('Header');
     const pathName = usePathname();
-    const router = useTransitionRouter(); 
-    
+    const router = useTransitionRouter();
+
     const navigationsBar: NavigationBar = [
         {
             path: '',
@@ -43,7 +43,7 @@ export default function Header({ locale }: { locale: string }) {
 
     const pageAnimation = () => {
         console.log('🎬 Starting page animation');
-        
+
         try {
             document.documentElement.animate([
                 {
@@ -80,7 +80,7 @@ export default function Header({ locale }: { locale: string }) {
                     pseudoElement: '::view-transition-new(root)',
                 }
             );
-            
+
             console.log('✅ Animation setup complete');
         } catch (error) {
             console.error('❌ Animation setup failed:', error);
@@ -89,10 +89,10 @@ export default function Header({ locale }: { locale: string }) {
 
     const handleNavigation = async (fullPath: string, e: React.MouseEvent) => {
         e.preventDefault();
-        
+
         console.log(`🚀 Navigating to: ${fullPath}`);
         console.log(`📍 Current path: ${pathName}`);
-        
+
         try {
             // Add a small delay for /whatsNew to help with DOM readiness
             if (fullPath.includes('/whatsNew')) {
@@ -101,7 +101,7 @@ export default function Header({ locale }: { locale: string }) {
             }
 
             const startTime = Date.now();
-            
+
             await router.push(fullPath, {
                 onTransitionReady: () => {
                     const readyTime = Date.now() - startTime;
@@ -109,10 +109,10 @@ export default function Header({ locale }: { locale: string }) {
                     pageAnimation();
                 }
             });
-            
+
             const totalTime = Date.now() - startTime;
             console.log(`✅ Navigation completed in ${totalTime}ms`);
-            
+
         } catch (error) {
             console.error('❌ Navigation failed:', error);
             console.log('🔄 Falling back to regular navigation');
@@ -123,7 +123,13 @@ export default function Header({ locale }: { locale: string }) {
     return (
         <div className='min-w-screen bg-transparent absolute w-full top-0 z-50 flex justify-between py-4 px-10'>
             <div className='flex justify-between items-center backdrop:blur-[10px]'>
-                <span className={`${manrope.className} text-2xl text-white drop-shadow-md tracking-tight`}>Rose&More</span>
+                <Link
+                    href={"/" + locale}
+                    onClick={(e) => handleNavigation(`/${locale}`, e)}
+
+                >
+                    <span className={`${manrope.className} text-2xl text-white drop-shadow-md tracking-tight`}>Rose&More</span>
+                </Link>
             </div>
             <div className='hidden lg:flex space-x-6 w-full justify-end items-start pr-32'>
                 <NavigationMenu className="w-full content-center align-middle">

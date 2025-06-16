@@ -11,6 +11,7 @@ import { use } from "react"
 import Link from "next/link"
 import FloatingChat from "../components/floating-chat"
 import Image from "next/image"
+import LoadingLogo from "../components/LoadingPage"
 interface Flower {
     id: number
     name: string
@@ -125,6 +126,7 @@ export default function FlowerShowcase({ params }: { params: Promise<{ locale: s
     const [viewMode, setViewMode] = useState<ViewMode>("grid-3")
     const [favorites, setFavorites] = useState<number[]>([])
     const [isOpen, setIsOpen] = useState(false)
+    const [isReady, setIsReady] = useState(false)
 
     const toggleChat = () => {
         setIsOpen((prev) => !prev)
@@ -141,8 +143,11 @@ export default function FlowerShowcase({ params }: { params: Promise<{ locale: s
     const onViewModeChange = (mode: ViewMode) => {
         console.log("Clicked")
         setViewMode(mode)
-
-        console.log("viewmode", viewMode)
+        setIsReady(true)
+        //Delay to simulate loading
+        setTimeout(() => {
+            setIsReady(false)
+        }, 1500) // Adjust the delay as needed
     }
     const getGridClasses = () =>
         clsx(
@@ -160,90 +165,95 @@ export default function FlowerShowcase({ params }: { params: Promise<{ locale: s
             {/* Header Section */}
             <Header locale={locale} />
             <div className="py-12" />
+            {isReady ? (
+                <LoadingLogo />) : (
+                <>
+                    <div className="container mx-auto px-4 mb-8">
+                        <div className="flex justify-end gap-2 mb-6">
+                            {["grid-2", "grid-3", "grid-4"].map((mode) => {
+                                const Icon = mode === "grid-2" ? Grid2X2 : mode === "grid-3" ? Grid3X3 : LayoutGrid
+                                return (
+                                    <Button
+                                        key={mode}
+                                        variant={viewMode === mode ? "default" : "outline"}
+                                        size="sm"
+                                        onClick={() => onViewModeChange(mode as ViewMode)}
+                                        className={clsx(
+                                            viewMode === mode ? "bg-rose-500 hover:bg-rose-600" : "bg-gray-800/50 border-gray-600 text-gray-300 hover:bg-rose-500/20"
+                                        )}
+                                    >
+                                        <Icon className="h-4 w-4" />
+                                    </Button>
+                                )
+                            })}
+                        </div>
 
-            {/* Controls */}
-            <div className="container mx-auto px-4 mb-8">
-                <div className="flex justify-end gap-2 mb-6">
-                    {["grid-2", "grid-3", "grid-4"].map((mode) => {
-                        const Icon = mode === "grid-2" ? Grid2X2 : mode === "grid-3" ? Grid3X3 : LayoutGrid
-                        return (
-                            <Button
-                                key={mode}
-                                variant={viewMode === mode ? "default" : "outline"}
-                                size="sm"
-                                onClick={() => onViewModeChange(mode as ViewMode)}
-                                className={clsx(
-                                    viewMode === mode ? "bg-rose-500 hover:bg-rose-600" : "bg-gray-800/50 border-gray-600 text-gray-300 hover:bg-rose-500/20"
-                                )}
-                            >
-                                <Icon className="h-4 w-4" />
-                            </Button>
-                        )
-                    })}
-                </div>
-
-                {/* Category Filter */}
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.6, delay: 1 }}
-                    className="flex flex-wrap justify-center gap-3 px-4 mb-16"
-                >
-                    {categories.map((category, index) => (
+                        {/* Category Filter */}
                         <motion.div
-                            key={category}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 1.2 + index * 0.1 }}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.6, delay: 1 }}
+                            className="flex flex-wrap justify-center gap-3 px-4 mb-16"
                         >
-                            <Button
-                                key={category}
-                                variant={selectedCategory === category ? "default" : "outline"}
-                                size="sm"
-                                onClick={() => setSelectedCategory(category)}
-                                className={clsx(
-                                    "rounded-full px-4 py-2 text-sm",
-                                    selectedCategory === category
-                                        ? "bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600"
-                                        : "bg-gray-800/50 border-gray-600 text-gray-300 hover:bg-rose-500/20 hover:border-rose-400"
-                                )}
-                            >
-                                {category}
-                            </Button>
+                            {categories.map((category, index) => (
+                                <motion.div
+                                    key={category}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 1.2 + index * 0.1 }}
+                                >
+                                    <Button
+                                        key={category}
+                                        variant={selectedCategory === category ? "default" : "outline"}
+                                        size="sm"
+                                        onClick={() => setSelectedCategory(category)}
+                                        className={clsx(
+                                            "rounded-full px-4 py-2 text-sm",
+                                            selectedCategory === category
+                                                ? "bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600"
+                                                : "bg-gray-800/50 border-gray-600 text-gray-300 hover:bg-rose-500/20 hover:border-rose-400"
+                                        )}
+                                    >
+                                        {category}
+                                    </Button>
+                                </motion.div>
+                            ))}
                         </motion.div>
-                    ))}
-                </motion.div>
-            </div>
+                    </div>
 
-            {/* Flower Grid */}
-            <div className="container mx-auto px-4 pb-12">
-                <div className={clsx(getGridClasses(), "gap-6  ")}>
-                    <AnimatePresence mode="popLayout">
-                        {filteredRoses.map((rose, index) => (
-                            <motion.div
-                                key={rose.id}
-                                layout
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.95 }}
-                                transition={{ duration: 0.3, delay: index * 0.02 }}
-                            >
-                                <FlowerCard
-                                    rose={rose}
-                                    index={index}
-                                    locale={locale}
-                                    isFavorite={favorites.includes(rose.id)}
-                                    onToggleFavorite={() => toggleFavorite(rose.id)}
-                                />
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
-                </div>
 
-                <div className="fixed bottom-10 right-0 ">
-                    <FloatingChat />
-                </div>
-            </div>
+                    <div className="container mx-auto px-4 pb-12">
+                        <div className={clsx(getGridClasses(), "gap-6  ")}>
+                            <AnimatePresence mode="popLayout">
+                                {filteredRoses.map((rose, index) => (
+                                    <motion.div
+                                        key={rose.id}
+                                        layout
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.95 }}
+                                        transition={{ duration: 0.3, delay: index * 0.02 }}
+                                    >
+                                        <FlowerCard
+                                            rose={rose}
+                                            index={index}
+                                            locale={locale}
+                                            isFavorite={favorites.includes(rose.id)}
+                                            onToggleFavorite={() => toggleFavorite(rose.id)}
+                                        />
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
+                        </div>
+
+                        <div className="fixed bottom-10 right-0 ">
+                            <FloatingChat />
+                        </div>
+                    </div>
+                </>
+            )
+            }
+
         </div >
     )
 }
@@ -313,7 +323,7 @@ function FlowerCard({ rose, index, locale, isFavorite, onToggleFavorite }: Flowe
 
                             {/* Main oval container */}
                             <div className="absolute inset-2 rounded-full overflow-hidden bg-gray-700/50 border-2 border-gray-600">
-                           
+
 
                                 <Image
                                     src={rose.image || "/placeholder.svg"} alt={rose.name}
