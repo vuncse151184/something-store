@@ -8,8 +8,9 @@ import { Sparkles, Heart, Leaf, Grid3X3, Grid2X2, LayoutGrid } from "lucide-reac
 import clsx from "clsx"
 import Header from "../components/Header"
 import { use } from "react"
-import Link from "next/link" 
+import Link from "next/link"
 import FloatingChat from "../components/floating-chat"
+import Image from "next/image"
 interface Flower {
     id: number
     name: string
@@ -312,7 +313,15 @@ function FlowerCard({ rose, index, locale, isFavorite, onToggleFavorite }: Flowe
 
                             {/* Main oval container */}
                             <div className="absolute inset-2 rounded-full overflow-hidden bg-gray-700/50 border-2 border-gray-600">
-                                <img src={rose.image || "/placeholder.svg"} alt={rose.name} className="w-full h-full object-cover" />
+                           
+
+                                <Image
+                                    src={rose.image || "/placeholder.svg"} alt={rose.name}
+                                    className="w-full h-full object-cover"
+                                    loading="lazy"
+                                    fill
+                                    sizes="100vw"
+                                />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                             </div>
 

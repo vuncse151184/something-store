@@ -168,18 +168,18 @@ export default function SignInPage({ params }: { params: Promise<{ locale: strin
 
           <CardFooter className="flex flex-col space-y-4 pt-6">
             <div className="text-center text-sm text-gray-600">
-              Don't have an account?{" "}
+              Don&apos;t have an account? 
               <Link href={`${locale}/sign-up`} className="text-blue-600 hover:text-blue-500 font-medium">
                 Sign up
               </Link>
             </div>
 
             <div className="text-center text-xs text-gray-500">
-              By signing in, you agree to our{" "}
+              By signing in, you agree to our 
               <Link href="/terms" className="underline hover:text-gray-700">
                 Terms of Service
-              </Link>{" "}
-              and{" "}
+              </Link>
+              and 
               <Link href="/privacy" className="underline hover:text-gray-700">
                 Privacy Policy
               </Link>

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 type Bouquet = {
     id: string
@@ -26,11 +27,14 @@ export default function BouquetSuggestion({ bouquet }: BouquetSuggestionProps) {
             className="rounded-lg overflow-hidden border border-gray-800 bg-gray-800/50 hover:bg-gray-800/80 transition-colors"
         >
             <div className="flex flex-col sm:flex-row">
-                <div className="w-full sm:w-1/3 h-32 sm:h-auto relative">
-                    <img
+                <div className="w-full sm:w-1/3 h-32 sm:h-auto relative"> 
+                    <Image
                         src={bouquet.image || "/placeholder.svg?height=200&width=200"}
                         alt={bouquet.name}
                         className="w-full h-full object-cover"
+                        loading="lazy"
+                        fill
+                        sizes="100vw"
                     />
                     <div className="absolute top-2 right-2">
                         <Button

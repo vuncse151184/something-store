@@ -6,8 +6,7 @@ import { routing } from '@/i18n/routing';
 import Header from './components/Header';
 import { ViewTransitions } from 'next-view-transitions'
 import PageWrapper from './components/PageWrapper';
-import ChatInterface from './components/chat-interface';
-import FloatingChatButton from './components/floating-chat-button';
+import ChatInterface from './components/chat-interface'; 
 // import GSAPSmoothWrapper from './components/GSAPSmoothWrapper';
 
 export function generateStaticParams() {

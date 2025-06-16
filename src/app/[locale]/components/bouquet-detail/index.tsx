@@ -124,7 +124,7 @@ export default function BouquetDetail() {
                         <h3 className="text-lg font-semibold mt-6 mb-2">Bouquet Includes:</h3>
                         <ul className="list-disc pl-5 space-y-1">
                             <li>Premium roses in soft pink hues</li>
-                            <li>Delicate baby's breath</li>
+                            <li>Delicate baby&apos;s breath</li> 
                             <li>Fragrant eucalyptus sprigs</li>
                             <li>Seasonal wildflowers</li>
                             <li>Decorative greenery</li>
