@@ -1,6 +1,5 @@
 import React from 'react'
-import BouquetDetail from '../../components/bouquet-detail'
-import BouquetCustomizer from '../../components/bouquet-customizer'
+import BouquetDetail from '../../components/bouquet-detail' 
 
 const BouquetPage = () => {
     return (
