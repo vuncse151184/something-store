@@ -1,38 +1,27 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
-import { type NextRequest } from 'next/server';
-import { updateSession } from '@/utils/supabase/middleware';
+import { NextResponse, type NextRequest } from 'next/server';
 import createIntlMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
 
+// i18n middleware
 const intlMiddleware = createIntlMiddleware(routing);
 
-// Define public routes using createRouteMatcher
-const isPublicRoute = createRouteMatcher([
-  '/',
-  '/:locale',
-  '/:locale/sign-in(.*)',
-  '/:locale/sign-up(.*)',
-  '/:locale/products(.*)',
-]);
-
-export default clerkMiddleware(async (auth, req: NextRequest) => {
-  // Handle internationalization first
+export default async function middleware(req: NextRequest) {
+  console.log('🔍 Middleware - URL:', req.nextUrl.pathname);
+  
+  // Only handle i18n - no authentication required
   const intlResult = intlMiddleware(req);
-  if (intlResult?.status !== 200) return intlResult;
-
-  // Handle Supabase session
-  const sessionResult = await updateSession(req);
-  if (sessionResult?.status !== 200) return sessionResult;
-
-  // Protect non-public routes
-  if (!isPublicRoute(req)) {
-    await auth.protect();
+  
+  if (intlResult) {
+    console.log('- i18n redirect/response');
+    return intlResult;
   }
-});
+  
+  console.log('- ✅ Proceeding without auth');
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: [
-    '/', // <= IMPORTANT: include root "/" explicitly
     '/(vi|en)/:path*',
     '/(api|trpc)(.*)',
   ],
