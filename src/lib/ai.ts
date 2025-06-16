@@ -75,7 +75,7 @@ const BOUQUET_DATABASE: Bouquet[] = [
     name: "Love's Embrace",
     description: "A passionate arrangement of red roses and lilies",
     meaning: "Deep love and passion",
-    image: "/placeholder.svg?height=200&width=200&text=Love's+Embrace",
+    image: "/images/rose-3.jpg",
     price: "$89.99",
   },
   {
@@ -83,7 +83,7 @@ const BOUQUET_DATABASE: Bouquet[] = [
     name: "Peaceful Harmony",
     description: "White lilies and blue delphiniums create a serene arrangement",
     meaning: "Peace, tranquility, and harmony",
-    image: "/placeholder.svg?height=200&width=200&text=Peaceful+Harmony",
+    image: "/images/rose-3.jpg",
     price: "$79.99",
   },
   {
@@ -91,7 +91,7 @@ const BOUQUET_DATABASE: Bouquet[] = [
     name: "Joyful Celebration",
     description: "Vibrant sunflowers and gerbera daisies",
     meaning: "Happiness, joy, and celebration",
-    image: "/placeholder.svg?height=200&width=200&text=Joyful+Celebration",
+    image: "/images/rose-3.jpg",
     price: "$69.99",
   },
   {
@@ -99,7 +99,7 @@ const BOUQUET_DATABASE: Bouquet[] = [
     name: "Sympathy & Remembrance",
     description: "Elegant white roses and chrysanthemums",
     meaning: "Remembrance, sympathy, and respect",
-    image: "/placeholder.svg?height=200&width=200&text=Sympathy+Remembrance",
+    image: "/images/rose-3.jpg",
     price: "$84.99",
   },
   {
@@ -107,7 +107,7 @@ const BOUQUET_DATABASE: Bouquet[] = [
     name: "New Beginnings",
     description: "Fresh daisies and pink tulips",
     meaning: "New starts, innocence, and hope",
-    image: "/placeholder.svg?height=200&width=200&text=New+Beginnings",
+    image: "/images/rose-3.jpg",
     price: "$74.99",
   },
   {
@@ -115,7 +115,7 @@ const BOUQUET_DATABASE: Bouquet[] = [
     name: "Gratitude Bouquet",
     description: "Pink and peach roses with eucalyptus",
     meaning: "Thankfulness and appreciation",
-    image: "/placeholder.svg?height=200&width=200&text=Gratitude+Bouquet",
+    image: "/images/rose-3.jpg",
     price: "$64.99",
   },
 ]

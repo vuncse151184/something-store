@@ -73,7 +73,7 @@ export default function ChatInterface() {
         name: "Love's Embrace",
         description: "A passionate arrangement of red roses and lilies",
         meaning: "Deep love and passion",
-        image: "/placeholder.svg?height=200&width=200&text=Love's+Embrace",
+        image: "/images/rose-3.jpg",
         price: "$89.99",
       })
     }
@@ -84,7 +84,7 @@ export default function ChatInterface() {
         name: "Peaceful Harmony",
         description: "White lilies and blue delphiniums create a serene arrangement",
         meaning: "Peace, tranquility, and harmony",
-        image: "/placeholder.svg?height=200&width=200&text=Peaceful+Harmony",
+        image: "/images/rose-3.jpg",
         price: "$79.99",
       })
     }
@@ -95,7 +95,7 @@ export default function ChatInterface() {
         name: "Joyful Celebration",
         description: "Vibrant sunflowers and gerbera daisies",
         meaning: "Happiness, joy, and celebration",
-        image: "/placeholder.svg?height=200&width=200&text=Joyful+Celebration",
+        image: "/images/rose-3.jpg",
         price: "$69.99",
       })
     }
@@ -106,7 +106,7 @@ export default function ChatInterface() {
         name: "Sympathy & Remembrance",
         description: "Elegant white roses and chrysanthemums",
         meaning: "Remembrance, sympathy, and respect",
-        image: "/placeholder.svg?height=200&width=200&text=Sympathy+Remembrance",
+        image: "/images/rose-3.jpg",
         price: "$84.99",
       })
     }
@@ -117,7 +117,7 @@ export default function ChatInterface() {
         name: "New Beginnings",
         description: "Fresh daisies and pink tulips",
         meaning: "New starts, innocence, and hope",
-        image: "/placeholder.svg?height=200&width=200&text=New+Beginnings",
+        image: "/images/rose-3.jpg",
         price: "$74.99",
       })
     }
@@ -128,7 +128,7 @@ export default function ChatInterface() {
         name: "Gratitude Bouquet",
         description: "Pink and peach roses with eucalyptus",
         meaning: "Thankfulness and appreciation",
-        image: "/placeholder.svg?height=200&width=200&text=Gratitude+Bouquet",
+        image: "/images/rose-3.jpg",
         price: "$64.99",
       })
     }
@@ -289,7 +289,7 @@ export default function ChatInterface() {
                 </div>
                 <div className="flex-1 space-y-1">
                   <p className="text-sm font-medium text-gray-300">
-                    {message.role === "user" ? "You" : "Bouquet Advisor"}
+                    {message.role === "user" ? "You" : "Trợ lý tư vấn hoa"}
                   </p>
                   <div className="prose prose-sm max-w-none prose-invert">
                     <p className="text-gray-300 text-sm">{message.content}</p>
@@ -318,7 +318,7 @@ export default function ChatInterface() {
                   <Flower2 className="h-4 w-4 text-white" />
                 </div>
                 <div className="flex-1 space-y-1">
-                  <p className="text-sm font-medium text-gray-300">Bouquet Advisor</p>
+                  <p className="text-sm font-medium text-gray-300">Trợ lý tư vấn hoa</p>
                   <div className="prose prose-sm max-w-none prose-invert">
                     <p className="text-gray-300 text-sm">
                       {streamingState.content}

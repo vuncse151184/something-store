@@ -44,13 +44,13 @@ export default function BouquetSuggestion({ bouquet }: BouquetSuggestionProps) {
                 </div>
                 <div className="p-4 flex-1">
                     <div className="flex justify-between items-start">
-                        <h3 className="font-medium text-gray-100">{bouquet.name}</h3>
-                        <span className="text-pink-400 font-semibold">{bouquet.price}</span>
+                        <h3 className="font-medium text-sm text-gray-100">{bouquet.name}</h3>
+                        <span className="text-pink-400 text-sm font-semibold">{bouquet.price}</span>
                     </div>
-                    <p className="text-sm text-gray-400 mt-1">{bouquet.description}</p>
+                    <p className="text-sm text-gray-400  mt-1">{bouquet.description}</p>
                     <div className="mt-3">
-                        <h4 className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Meaning</h4>
-                        <p className="text-sm text-gray-300 mt-1">{bouquet.meaning}</p>
+                        <h4 className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Ý nghĩa</h4>
+                        <p className="text-sm text-gray-300  mt-1">{bouquet.meaning}</p>
                     </div>
                     <div className="mt-3 flex justify-end">
                         <Button

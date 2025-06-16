@@ -8,9 +8,7 @@ import { Sparkles, Heart, Leaf, Grid3X3, Grid2X2, LayoutGrid } from "lucide-reac
 import clsx from "clsx"
 import Header from "../components/Header"
 import { use } from "react"
-import Link from "next/link"
-import FloatingChatButton from "../components/floating-chat-button"
-import ChatInterface from "../components/chat-interface"
+import Link from "next/link" 
 import FloatingChat from "../components/floating-chat"
 interface Flower {
     id: number

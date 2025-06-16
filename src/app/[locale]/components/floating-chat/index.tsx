@@ -108,7 +108,7 @@ export default function FloatingChat() {
                             <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-purple-900 to-pink-800 relative z-10">
                                 <div className="flex items-center space-x-2">
                                     <Flower2 className="h-5 w-5 text-pink-200" />
-                                    <h3 className="font-medium text-white">Bouquet Advisor</h3>
+                                    <h3 className="font-medium text-white">Trợ lý tư vấn hoa</h3>
                                 </div>
                                 <div className="flex items-center space-x-1">
                                     <Button
