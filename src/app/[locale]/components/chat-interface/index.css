@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .bouquet-suggestions-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .custom-horizontal-scrollbar {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Custom scrollbar styling */
+  .custom-horizontal-scrollbar .simplebar-track.simplebar-horizontal {
+    height: 6px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    margin: 4px 0;
+  }
+
+  .custom-horizontal-scrollbar .simplebar-scrollbar:before {
+    background: linear-gradient(90deg, #e11d48, #f43f5e);
+    border-radius: 8px;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+  }
+
+  .custom-horizontal-scrollbar .simplebar-scrollbar:hover:before {
+    opacity: 1;
+    background: linear-gradient(90deg, #be123c, #e11d48);
+  }
+
+  /* Smooth scrolling */
+  .custom-horizontal-scrollbar .simplebar-content-wrapper {
+    scroll-behavior: smooth;
+  }
+
+  /* Remove default scrollbar */
+  .custom-horizontal-scrollbar .simplebar-content-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .custom-horizontal-scrollbar .simplebar-content-wrapper {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Add subtle shadows for better visual separation */
+  .custom-horizontal-scrollbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .custom-horizontal-scrollbar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+    pointer-events: none;
+    z-index: 1;
+  }
+
+
+
+}

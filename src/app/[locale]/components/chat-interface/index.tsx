@@ -9,6 +9,9 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
 import { generateBouquetRecommendation } from "@/lib/ai"
 import BouquetSuggestion from "./../bouqet-suggestion"
+import SimpleBar from 'simplebar-react';
+import 'simplebar-react/dist/simplebar.min.css';
+
 
 type Message = {
   id: string
@@ -272,7 +275,7 @@ export default function ChatInterface() {
               <div
                 className={cn(
                   "flex items-start gap-3 rounded-lg p-3",
-                  message.role === "user" ? "bg-gray-800" : "bg-gray-800/50",
+                  message.role === "user" ? "bg-gray-800 ml-10" : "mr-10 bg-gray-800/50",
                 )}
               >
                 <div
@@ -296,16 +299,44 @@ export default function ChatInterface() {
                   </div>
                 </div>
               </div>
-
               {/* Bouquet suggestions for completed messages */}
               {message.bouquets && message.bouquets.length > 0 && (
-                <div className="pl-11">
-                  <div className="grid grid-cols-1 gap-3">
-                    {message.bouquets.map((bouquet) => (
-                      <BouquetSuggestion key={bouquet.id} bouquet={bouquet} />
-                    ))}
+                <>
+                  <div className="bouquet-suggestions-container">
+                    <p className="text-gray-200 font-medium">Giỏ hoa gợi ý</p>
+
+                    <SimpleBar
+                      style={{
+                        maxWidth: '100%',
+                        height: 'auto'
+                      }}
+                      className="custom-horizontal-scrollbar"
+                      options={{
+                        autoHide: true,
+                        timeout: 2000,
+                        classNames: {
+                          // Custom class names for different parts
+                          content: 'simplebar-content',
+                          wrapper: 'simplebar-wrapper',
+                          offset: 'simplebar-offset',
+                          mask: 'simplebar-mask',
+                          placeholder: 'simplebar-placeholder',
+                          scrollbar: 'simplebar-scrollbar',
+                          track: 'simplebar-track'
+                        }
+                      }}
+                    >
+                      <div className="flex gap-4 py-2 px-1 min-w-max">
+                        {message.bouquets.map((bouquet) => (
+                          <div key={bouquet.id} className="flex-shrink-0 w-[200px]">
+                            <BouquetSuggestion bouquet={bouquet} />
+                          </div>
+                        ))}
+                      </div>
+                    </SimpleBar>
+
                   </div>
-                </div>
+                </>
               )}
             </div>
           ))}

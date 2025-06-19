@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs'
 import dotenv from 'dotenv'
 dotenv.config()
+import { Analytics } from "@vercel/analytics/next"
+
 
 export const metadata: Metadata = {
     title: 'Rose&More',
@@ -34,6 +36,7 @@ export default function RootLayout({
                         </div>
                     </body>
                 </html>
+                <Analytics />
             </ViewTransitions>
         </ClerkProvider>
 
