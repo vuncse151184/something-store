@@ -12,7 +12,6 @@ import BouquetSuggestion from "./../bouqet-suggestion"
 import SimpleBar from 'simplebar-react';
 import 'simplebar-react/dist/simplebar.min.css';
 
-
 type Message = {
   id: string
   role: "user" | "assistant"
