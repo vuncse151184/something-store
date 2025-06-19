@@ -2,7 +2,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
-import { pacifico } from "@/fonts/font"
+import { manrope, pacifico } from "@/fonts/font"
 import Header from "../components/Header"
 import { use } from 'react';
 
@@ -14,7 +14,7 @@ export default function AboutPage({ params }: { params: Promise<{ locale: string
             {/* Background Image */}
             <Header locale={locale} />
             <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-[url('/images/errorrpage.jpg')]"
+                className="absolute inset-0 bg-cover bg-center bg-repeat-y bg-[url('/images/errorrpage.jpg')]"
             />
 
             {/* Dark overlay for better text readability */}

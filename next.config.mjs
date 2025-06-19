@@ -8,8 +8,17 @@ const withBundleAnalyzer = createBundleAnalyzer({
 });
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'flagcdn.com',
+        pathname: '/**',
+      },
+    ],
+  },
+};
 
-export default withNextIntl(
-  withBundleAnalyzer(nextConfig)
-);
+// Export with both plugins composed
+export default withNextIntl(withBundleAnalyzer(nextConfig));
