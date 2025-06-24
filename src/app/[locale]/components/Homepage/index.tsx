@@ -163,11 +163,10 @@ export default function HomePage({ locale }: { locale: string }) {
         <Image
           src="/images/bg-1.jpg"
           alt="background"
+          sizes='100vw'
           className={`absolute effect-flip w-full h-full object-cover object-center -z-10 transition-opacity duration-300 will-change-transform will-change-opacity ${isBgLoaded ? 'opacity-100' : 'opacity-0'}`}
           onLoad={() => setIsBgLoaded(true)}
           fill
-          priority
-          sizes="100vw"
         />
         {isBgLoaded && <div className="absolute w-full h-full bg-black/50 -z-5" />}
 
@@ -202,10 +201,10 @@ export default function HomePage({ locale }: { locale: string }) {
         <Image
           src="/images/bg-2.jpg"
           alt="background"
-          className="absolute effect-flip w-auto h-screen object-cover object-center -z-10 transition-opacity duration-300 will-change-transform will-change-opacity"
-          loading="lazy"
+          sizes='100vw'
           fill
-          sizes="100vw"
+          className="absolute effect-flip w-auto h-screen object-cover object-center -z-10 transition-opacity duration-300 will-change-transform will-change-opacity"
+
         />
         <div className="absolute w-full h-screen bg-black/50 -z-5" />
 
@@ -216,9 +215,9 @@ export default function HomePage({ locale }: { locale: string }) {
                 src={`/images/template/template${index + 1}.jpg`}
                 alt={`background-${index}`}
                 className="w-full h-full object-cover object-center hover:scale-110 transition-transform duration-300"
-                loading="lazy"
-                fill
-                sizes="25vw"
+                priority
+                width={400}
+                height={600}
               />
               <div className="flex items-center px-2 max-w-[70%] w-fit bg-black/30 top-12 justify-center absolute">
                 <p className={`${lora.className} text-white text-2xl italic uppercase`}>

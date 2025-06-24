@@ -1,72 +1,61 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { Heart } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import Image from "next/image"
+import { Badge } from "@/components/ui/badge"
+import { ShoppingCart, Heart } from "lucide-react"
 
-type Bouquet = {
-    id: string
-    name: string
-    description: string
-    meaning: string
-    image: string
-    price: string
+interface Bouquet {
+  id: string
+  name: string
+  description: string
+  meaning: string
+  image: string
+  price: string
 }
 
 interface BouquetSuggestionProps {
-    bouquet: Bouquet
+  bouquet: Bouquet
 }
 
 export default function BouquetSuggestion({ bouquet }: BouquetSuggestionProps) {
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="rounded-lg min-w-[70%] overflow-hidden border border-gray-800 bg-gray-800/50 hover:bg-gray-800/80 transition-colors"
-        >
-            <div className="flex flex-col sm:flex-row">
-                <div className="w-full sm:w-1/3 h-32 sm:h-auto relative">
-                    <Image
-                        src={bouquet.image || "/placeholder.svg?height=200&width=200"}
-                        alt={bouquet.name}
-                        className="!w-36 h-full object-cover"
-                        loading="lazy"
-                        fill
-                        sizes="100vw"
-                    />
-                    <div className="absolute top-2 right-2">
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-6 w-6 rounded-full bg-black/30 hover:bg-black/50 text-white"
-                        >
-                            <Heart className="h-2 w-2" />
-                        </Button>
-                    </div>
-                </div>
-                <div className="p-2 flex-1">
-                    <div className="flex justify-between items-start">
-                        <h3 className="font-medium text-[12px] text-gray-100">{bouquet.name}</h3>
+  return (
+    <Card className="w-full bg-gray-800/80 border-gray-700 hover:border-purple-500/50 transition-colors">
+      <CardContent className="p-3">
+        <div className="aspect-square mb-3 overflow-hidden rounded-lg">
+          <img
+            src={bouquet.image || "/placeholder.svg"}
+            alt={bouquet.name}
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+          />
+        </div>
 
-                    </div>
-                    {/* <p className="text-sm text-gray-400  mt-1">{bouquet.description}</p>
-                    <div className="mt-3">
-                        <h4 className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Ý nghĩa</h4>
-                        <p className="text-sm text-gray-300  mt-1">{bouquet.meaning}</p>
-                    </div> */}
-                    <div className="mt-3 ">
-                        {/* <Button
-                            size="sm"
-                            className="bg-gradient-to-r from-purple-700 to-pink-600 hover:from-purple-800 hover:to-pink-700 text-white"
-                        >
-                            View Details
-                        </Button> */}
-                        <span className="text-pink-400 text-sm font-semibold">{bouquet.price}</span>
-                    </div>
-                </div>
+        <div className="space-y-2">
+          <h4 className="font-semibold text-gray-100 text-sm leading-tight">{bouquet.name}</h4>
+
+          <p className="text-xs text-gray-400 line-clamp-2">{bouquet.description}</p>
+
+          <Badge variant="secondary" className="text-xs bg-purple-900/50 text-purple-300 border-purple-500/30">
+            {bouquet.meaning}
+          </Badge>
+
+          <div className="flex items-center justify-between pt-2">
+            <span className="font-bold text-pink-400">{bouquet.price}</span>
+            <div className="flex gap-1">
+              <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-gray-400 hover:text-pink-400">
+                <Heart className="h-3 w-3" />
+              </Button>
+              <Button
+                size="sm"
+                className="h-8 px-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+              >
+                <ShoppingCart className="h-3 w-3 mr-1" />
+                <span className="text-xs">Add</span>
+              </Button>
             </div>
-        </motion.div>
-    )
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
 }

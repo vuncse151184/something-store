@@ -57,7 +57,7 @@ const LocaleSwitcher = () => {
                 className={`
           flex items-center space-x-2 px-3 py-2 rounded-md
           bg-transparent  hover:border-gray-400
-          text-white hover:text-white transition-colors duration-200
+          text-white hover:text-white transition-colors duration-200 justify-end
           ${manrope.className} ${isPending ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
         `}
             >

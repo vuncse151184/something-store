@@ -48,9 +48,9 @@ class GeminiConfig {
     if (!apiKey) {
       throw new Error("GEMINI_API_KEY or NEXT_PUBLIC_GEMINI_API_KEY is required")
     }
-    
+
     console.log("Initializing Gemini with API key:", apiKey.substring(0, 10) + "...")
-    
+
     this.client = createGoogleGenerativeAI({
       apiKey: apiKey,
     })
@@ -156,10 +156,10 @@ class IntentAnalyzer {
   static analyze(message: string): UserIntent {
     const content = message.toLowerCase()
     const keywords: string[] = []
-    
+
     let detectedOccasion: string | undefined
     let detectedEmotion: string | undefined
-    
+
     // Analyze occasions
     for (const [occasion, terms] of Object.entries(this.OCCASION_KEYWORDS)) {
       const matchedTerms = terms.filter(term => content.includes(term))
@@ -168,7 +168,7 @@ class IntentAnalyzer {
         keywords.push(...matchedTerms)
       }
     }
-    
+
     // Analyze emotions
     for (const [emotion, terms] of Object.entries(this.EMOTION_KEYWORDS)) {
       const matchedTerms = terms.filter(term => content.includes(term))
@@ -177,7 +177,7 @@ class IntentAnalyzer {
         keywords.push(...matchedTerms)
       }
     }
-    
+
     return {
       occasion: detectedOccasion,
       emotion: detectedEmotion,
@@ -213,20 +213,20 @@ class BouquetRecommendationEngine {
   static recommend(userRequest: string, aiResponse: string, maxRecommendations: number = 3): Bouquet[] {
     const userIntent = IntentAnalyzer.analyze(userRequest)
     const responseIntent = IntentAnalyzer.analyze(aiResponse)
-    
+
     const allKeywords = [...userIntent.keywords, ...responseIntent.keywords]
     const scores = this.calculateScores(allKeywords)
-    
+
     const sortedBouquets = this.sortByScore(scores)
-    
-    return sortedBouquets.length > 0 
+
+    return sortedBouquets.length > 0
       ? sortedBouquets.slice(0, maxRecommendations)
       : this.getDefaultRecommendations(maxRecommendations)
   }
 
   private static calculateScores(keywords: string[]): Map<string, number> {
     const scores = new Map<string, number>()
-    
+
     keywords.forEach(keyword => {
       const rule = this.SCORING_RULES[keyword as keyof typeof this.SCORING_RULES]
       if (rule) {
@@ -236,13 +236,13 @@ class BouquetRecommendationEngine {
         })
       }
     })
-    
+
     return scores
   }
 
   private static sortByScore(scores: Map<string, number>): Bouquet[] {
     return Array.from(scores.entries())
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .map(([id]) => BOUQUET_DATABASE.find(b => b.id === id))
       .filter((bouquet): bouquet is Bouquet => bouquet !== undefined)
   }
@@ -265,12 +265,12 @@ class GeminiAIService {
     onChunk: (chunk: string) => void
   ): Promise<string> {
     console.log("Starting streaming response generation...")
-    
+
     const formattedMessages = this.formatMessages(messages)
     const model = this.geminiConfig.getModel()
-    
+
     console.log("Formatted messages:", formattedMessages)
-    
+
     try {
       const result = streamText({
         model,
@@ -279,19 +279,19 @@ class GeminiAIService {
         temperature: 0.7,
         maxTokens: 500,
       })
-      
+
       let fullText = ""
-      
+
       // Process the stream
       for await (const chunk of result.textStream) {
         console.log("Received chunk:", chunk)
         fullText += chunk
         onChunk(chunk)
       }
-      
+
       console.log("Streaming completed. Full text:", fullText)
       return fullText
-      
+
     } catch (error) {
       console.error("Error in streaming:", error)
       throw error
@@ -300,10 +300,10 @@ class GeminiAIService {
 
   async generateDirectResponse(messages: Message[]): Promise<string> {
     console.log("Starting direct response generation...")
-    
+
     const formattedMessages = this.formatMessages(messages)
     const model = this.geminiConfig.getModel()
-    
+
     try {
       const result = await generateText({
         model,
@@ -312,10 +312,10 @@ class GeminiAIService {
         temperature: 0.7,
         maxTokens: 500,
       })
-      
+
       console.log("Direct response generated:", result.text)
       return result.text
-      
+
     } catch (error) {
       console.error("Error in direct generation:", error)
       throw error
@@ -345,14 +345,16 @@ export class BouquetRecommendationService {
     try {
       console.log("Starting recommendation generation...")
       this.validateInput(messages)
-      
+
       const userRequest = this.getLatestUserMessage(messages)
       console.log("User request:", userRequest)
-      
+
       let text = ""
       let accumulatedText = ""
-      
+
       // Generate AI response with streaming or direct
+      // Adjust response language
+      
       if (onChunk) {
         console.log("Using streaming response...")
         text = await this.aiService.generateStreamingResponse(messages, (chunk) => {
@@ -363,18 +365,18 @@ export class BouquetRecommendationService {
         console.log("Using direct response...")
         text = await this.aiService.generateDirectResponse(messages)
       }
-      
+
       // Use accumulated text if available, otherwise use the returned text
       const finalText = accumulatedText || text
-      
+
       // Get bouquet recommendations
       const bouquets = BouquetRecommendationEngine.recommend(userRequest, finalText)
-      
+
       console.log("Generated response:", finalText)
       console.log("Recommended bouquets:", bouquets.map(b => b.name))
-      
+
       return { text: finalText, bouquets }
-      
+
     } catch (error) {
       console.error("Error in generateRecommendation:", error)
       throw this.handleError(error)
@@ -397,7 +399,7 @@ export class BouquetRecommendationService {
 
   private handleError(error: unknown): Error {
     console.error("Error in generateBouquetRecommendation:", error)
-    
+
     if (error instanceof Error) {
       if (error.message.includes("API key")) {
         return new Error("Gemini API configuration error. Please check your API key.")
@@ -409,7 +411,7 @@ export class BouquetRecommendationService {
         return new Error("Rate limit exceeded. Please try again in a moment.")
       }
     }
-    
+
     return new Error("Failed to generate bouquet recommendations. Please try again.")
   }
 }
@@ -426,7 +428,7 @@ export class BouquetUtilities {
 
   static searchBouquets(query: string): Bouquet[] {
     const searchTerm = query.toLowerCase()
-    return BOUQUET_DATABASE.filter(bouquet => 
+    return BOUQUET_DATABASE.filter(bouquet =>
       bouquet.name.toLowerCase().includes(searchTerm) ||
       bouquet.description.toLowerCase().includes(searchTerm) ||
       bouquet.meaning.toLowerCase().includes(searchTerm)
@@ -436,6 +438,8 @@ export class BouquetUtilities {
 
 // Main Export Functions (for backward compatibility)
 export async function generateBouquetRecommendation(
+
+  locale: string = "en",
   messages: Message[],
   onChunk: (chunk: string) => void,
 ): Promise<RecommendationResult> {

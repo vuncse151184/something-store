@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { lora, manrope } from '@/fonts/font'
 import { Button } from '@/components/ui/button'
@@ -13,18 +13,59 @@ import {
 } from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
 import { useTransitionRouter } from 'next-view-transitions'
+import { Badge } from '@/components/ui/badge'
+import { ShoppingBag } from "lucide-react"
+import ShoppingCart from '../ShoppingCart'
+import type { CartItem } from '@/app/types/shopping-cart.type'
 
 interface NavigationItem {
     path: string;
     name: string;
 }
 
+
+const initialCartItems: CartItem[] = [
+    {
+        id: "1",
+        name: "Rainbow Rose Bouquet",
+        price: 45.99,
+        quantity: 2,
+        image: "/images/rose-1.jpg",
+        category: "Bouquet",
+        inStock: true,
+    },
+    {
+        id: "2",
+        name: "Sunflower Arrangement",
+        price: 32.5,
+        quantity: 1,
+        image: "/images/rose-2.jpg",
+        category: "Arrangement",
+        inStock: true,
+    },
+    {
+        id: "3",
+        name: "Lavender Dream Bundle",
+        price: 28.75,
+        quantity: 3,
+        image: "/images/rose-3.jpg",
+        category: "Bundle",
+        inStock: false,
+    },
+]
+
+
 type NavigationBar = NavigationItem[];
 
 export default function Header({ locale }: { locale: string }) {
     const t = useTranslations('Header');
     const pathName = usePathname();
-    const router = useTransitionRouter();
+    const router = useTransitionRouter(); 
+    const badgeCount = 1;
+    const [isOpen, setIsOpen] = useState(false)
+    const [cartItems, setCartItems] = useState<CartItem[]>(initialCartItems)
+    const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0)
+
 
     const navigationsBar: NavigationBar = [
         {
@@ -120,8 +161,15 @@ export default function Header({ locale }: { locale: string }) {
         }
     };
 
+    const getBadgePositionClass = (count: Number) => {
+        const digits = count.toString().length;
+        if (digits === 1) return '-right-3';
+        if (digits === 2) return '-right-4';
+        return '-right-5'; // 3+ digits
+    };
+
     return (
-        <div className='min-w-screen bg-transparent absolute w-full top-0 z-50 flex justify-between py-4 px-10'>
+        <div className='min-w-screen bg-transparent absolute w-full top-0 z-50 flex justify-between items-center py-4 px-10'>
             <div className='flex justify-between items-center backdrop:blur-[10px]'>
                 <Link
                     href={"/" + locale}
@@ -155,12 +203,28 @@ export default function Header({ locale }: { locale: string }) {
                     </NavigationMenuList>
                 </NavigationMenu>
             </div>
+            {/*  
             <div className='flex space-x-6 items-center h-[30px]'>
                 <LocalSwitcher />
                 <Button variant='white' size='sm' className='hidden lg:block px-6 rounded-3xl'>
                     {t('buyButton')}
                 </Button>
-            </div>
+            </div> */}
+
+            <Button
+                onClick={() => setIsOpen(true)}
+                className=" relative bg-gradient-to-r from-purple-700 to-violet-500 hover:from-purple-700 hover:to-fuchsia-600 rounded-full p-3 shadow-lg z-50"
+            >
+                <ShoppingBag className="w-4 h-4" />
+                {totalItems > 0 && (
+                    <Badge className="absolute -top-2 -right-2 bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
+                        {totalItems}
+                    </Badge>
+                )}
+            </Button>
+            {isOpen && (
+                <ShoppingCart isOpen={isOpen} setIsOpen={setIsOpen} totalItems={totalItems} setCartItems={setCartItems} cartItems={cartItems} />
+            )}
         </div>
     )
 }

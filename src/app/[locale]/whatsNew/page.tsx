@@ -327,10 +327,10 @@ function FlowerCard({ rose, index, locale, isFavorite, onToggleFavorite }: Flowe
 
                                 <Image
                                     src={rose.image || "/placeholder.svg"} alt={rose.name}
-                                    className="w-full h-full object-cover"
-                                    loading="lazy"
-                                    fill
-                                    sizes="100vw"
+                                    className="w-full h-full object-cover" 
+                                    priority
+                                    width={300}
+                                    height={300}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                             </div>
