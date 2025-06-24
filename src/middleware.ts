@@ -1,28 +1,32 @@
-import { NextResponse, type NextRequest } from 'next/server';
+// middleware.ts
+import { NextRequest, NextResponse } from 'next/server';
 import createIntlMiddleware from 'next-intl/middleware';
-import { routing } from './i18n/routing';
+import { routing } from './../src/i18n/routing';
 
-// i18n middleware
 const intlMiddleware = createIntlMiddleware(routing);
 
-export default async function middleware(req: NextRequest) {
-  console.log('🔍 Middleware - URL:', req.nextUrl.pathname);
-  
-  // Only handle i18n - no authentication required
-  const intlResult = intlMiddleware(req);
-  
-  if (intlResult) {
-    console.log('- i18n redirect/response');
-    return intlResult;
+export default function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  // Skip internationalization for API routes
+  if (pathname.startsWith('/api/')) {
+    return NextResponse.next();
   }
-  
-  console.log('- ✅ Proceeding without auth');
-  return NextResponse.next();
+  if (pathname === '/sign-in' || '/sign-up' || '/sso-callback') {
+    // Skip internationalization for sign-in and sign-up pages
+    return NextResponse.next();
+   }
+
+  // Apply internationalization to all other routes
+  return intlMiddleware(request);
 }
 
 export const config = {
   matcher: [
+    // Enable a redirect to a matching locale at the root
+    '/',
+    // Set a cookie to remember the previous locale for all requests that have a locale prefix
     '/(vi|en)/:path*',
-    '/(api|trpc)(.*)',
-  ],
+    // Enable redirects that add missing locales but EXCLUDE api routes
+    '/((?!api|_next|_vercel|.*\\.).*)'
+  ]
 };

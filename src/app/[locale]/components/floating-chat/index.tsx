@@ -100,10 +100,10 @@ export default function FloatingChat() {
           <motion.div
             ref={chatRef}
             id="chat-panel"
-            className={`fixed z-50 bg-gray-900 rounded-lg shadow-xl overflow-hidden flex flex-col border border-gray-800 ${
+            className={`fixed z-500 bg-gray-900 rounded-lg shadow-xl overflow-hidden flex flex-col border border-gray-800 ${
               isMobile
                 ? "inset-x-4 bottom-20 top-20"
-                : `bottom-24 right-24 h-[500px] ${isExpanded ? "w-[900px] h-[600px] " : "w-[400px]"}`
+                : `bottom-20 right-24 h-[500px] ${isExpanded ? "w-[900px] h-[550px] " : "w-[400px]"}`
             }`}
             initial={isMobile ? { y: "100%" } : { scale: 0.8, opacity: 0, x: 80, y: 20 }}
             animate={isMobile ? { y: 0 } : { scale: 1, opacity: 1, x: 0, y: 0 }}
@@ -112,7 +112,7 @@ export default function FloatingChat() {
             layout
           >
             {/* Chat Header with Floral Pattern */}
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-hidden z-500">
               <div className="absolute inset-0 opacity-10">
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-900 to-pink-800"></div>
                 <div className="h-full w-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0zNiAzNGM0LjQxOCAwIDgtMy41ODIgOC04cy0zLjU4Mi04LTgtOC04IDMuNTgyLTggOCAzLjU4MiA4IDggOHptMC0yYzMuMzE0IDAgNi0yLjY4NiA2LTZzLTIuNjg2LTYtNi02LTYgMi42ODYtNiA2IDIuNjg2IDYgNiA2eiIvPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0yNCAzNGM0LjQxOCAwIDgtMy41ODIgOC04cy0zLjU4Mi04LTgtOC04IDMuNTgyLTggOCAzLjU4MiA4IDggOHptMC0yYzMuMzE0IDAgNi0yLjY4NiA2LTZzLTIuNjg2LTYtNi02LTYgMi42ODYtNiA2IDIuNjg2IDYgNiA2eiIvPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0yNCA0NGM0LjQxOCAwIDgtMy41ODIgOC04cy0zLjU4Mi04LTgtOC04IDMuNTgyLTggOCAzLjU4MiA4IDggOHptMC0yYzMuMzE0IDAgNi0yLjY4NiA2LTZzLTIuNjg2LTYtNi02LTYgMi42ODYtNiA2IDIuNjg2IDYgNiA2eiIvPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0zNiA0NGM0LjQxOCAwIDgtMy41ODIgOC04cy0zLjU4Mi04LTgtOC04IDMuNTgyLTggOCAzLjU4MiA4IDggOHptMC0yYzMuMzE0IDAgNi0yLjY4NiA2LTZzLTIuNjg2LTYtNi02LTYgMi42ODYtNiA2IDIuNjg2IDYgNiA2eiIvPjwvZz48L3N2Zz4=')]"></div>

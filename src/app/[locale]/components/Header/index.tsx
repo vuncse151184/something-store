@@ -17,7 +17,8 @@ import { Badge } from '@/components/ui/badge'
 import { ShoppingBag } from "lucide-react"
 import ShoppingCart from '../ShoppingCart'
 import type { CartItem } from '@/app/types/shopping-cart.type'
-
+import { UserButton } from '@clerk/nextjs'
+import { CustomUserButton } from '../custom-user-button'
 interface NavigationItem {
     path: string;
     name: string;
@@ -60,7 +61,7 @@ type NavigationBar = NavigationItem[];
 export default function Header({ locale }: { locale: string }) {
     const t = useTranslations('Header');
     const pathName = usePathname();
-    const router = useTransitionRouter(); 
+    const router = useTransitionRouter();
     const badgeCount = 1;
     const [isOpen, setIsOpen] = useState(false)
     const [cartItems, setCartItems] = useState<CartItem[]>(initialCartItems)
@@ -210,21 +211,24 @@ export default function Header({ locale }: { locale: string }) {
                     {t('buyButton')}
                 </Button>
             </div> */}
-
-            <Button
-                onClick={() => setIsOpen(true)}
-                className=" relative bg-gradient-to-r from-purple-700 to-violet-500 hover:from-purple-700 hover:to-fuchsia-600 rounded-full p-3 shadow-lg z-50"
-            >
-                <ShoppingBag className="w-4 h-4" />
-                {totalItems > 0 && (
-                    <Badge className="absolute -top-2 -right-2 bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
-                        {totalItems}
-                    </Badge>
+            <div className='flex items-center space-x-4 relative'> 
+                <Button
+                    onClick={() => setIsOpen(true)}
+                    className=" relative bg-gradient-to-r from-purple-700 to-violet-500 hover:from-purple-700 hover:to-fuchsia-600 rounded-full p-3 shadow-lg z-50"
+                >
+                    <ShoppingBag className="w-4 h-4" />
+                    {totalItems > 0 && (
+                        <Badge className="absolute -top-2 -right-2 bg-orange-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
+                            {totalItems}
+                        </Badge>
+                    )}
+                </Button>
+                {isOpen && (
+                    <ShoppingCart isOpen={isOpen} setIsOpen={setIsOpen} totalItems={totalItems} setCartItems={setCartItems} cartItems={cartItems} />
                 )}
-            </Button>
-            {isOpen && (
-                <ShoppingCart isOpen={isOpen} setIsOpen={setIsOpen} totalItems={totalItems} setCartItems={setCartItems} cartItems={cartItems} />
-            )}
+                <CustomUserButton />
+            </div>
+
         </div>
     )
 }
