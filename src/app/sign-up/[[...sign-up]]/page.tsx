@@ -60,7 +60,7 @@ export default function SignUpPage({ params }: { params: Promise<{ locale: strin
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+    <div className="h-2/4 flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
       <div className="w-full max-w-md">
         <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader className="space-y-1 pb-6">
@@ -159,10 +159,10 @@ export default function SignUpPage({ params }: { params: Promise<{ locale: strin
             </form>
           </CardContent>
 
-          <CardFooter className="flex flex-col space-y-4 pt-6">
+          <CardFooter className="flex flex-col space-y-4 ">
             <div className="text-center text-sm text-gray-600">
               Already have an account?{" "}
-              <Link href={`/${locale}/sign-in`} className="text-blue-600 hover:text-blue-500 font-medium">
+              <Link href={`/sign-in`} className="text-blue-600 hover:text-blue-500 font-medium">
                 Sign in
               </Link>
             </div>

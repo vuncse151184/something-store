@@ -36,9 +36,9 @@ export function CustomUserButton() {
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="ghost"
-                    className="relative h-12 w-12 rounded-full border-2 border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm group"
+                    className="relative h-8 w-8 rounded-full border-2 border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm group"
                 >
-                    <Avatar className="h-10 w-10">
+                    <Avatar className="h-6 w-6">
                         <AvatarImage
                             src={user.imageUrl || "/placeholder.svg"}
                             alt={user.fullName || "User avatar"}
@@ -71,15 +71,11 @@ export function CustomUserButton() {
             >
                 {/* Header with gradient background */}
                 <DropdownMenuLabel className="p-0 border-0">
-                    <div className="relative p-4 bg-gradient-to-r from-purple-600 to-pink-600   overflow-hidden">
-                        {/* Background pattern */}
-                        <div className="absolute inset-0 opacity-10">
-                            <div className="absolute inset-0" />
-                        </div>
-
+                    <div className="relative p-4 bg-gradient-to-r from-purple-950 to-pink-800   overflow-hidden">
+                        
                         <div className="relative flex items-center gap-3">
                             <div className="relative">
-                                <Avatar className="h-14 w-14 border-3 border-white/20 shadow-lg">
+                                <Avatar className="h-6 w-6 border-3 border-white/20 shadow-lg">
                                     <AvatarImage src={user.imageUrl || "/placeholder.svg"} alt={user.fullName || "User"} />
                                     <AvatarFallback className="bg-gradient-to-br from-purple-700 to-pink-700 text-white text-lg font-bold">
                                         {userInitials || <Flower2 className="h-6 w-6" />}
@@ -91,7 +87,7 @@ export function CustomUserButton() {
 
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2 mb-1">
-                                    <p className="text-white font-bold text-base truncate">{user.fullName || "Flower Lover"}</p>
+                                    <p className="text-white font-bold text-xs truncate">{user.fullName || "Flower Lover"}</p>
                                     {isVIP && (
                                         <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 text-xs font-bold border-0 px-2 py-0.5">
                                             <Crown className="h-3 w-3 mr-1" />
@@ -99,11 +95,11 @@ export function CustomUserButton() {
                                         </Badge>
                                     )}
                                 </div>
-                                <p className="text-purple-100 text-sm truncate opacity-90">{user.primaryEmailAddress?.emailAddress}</p>
-                                <div className="flex items-center gap-1 mt-1">
+                                <p className="text-purple-100 text-xs truncate opacity-90">{user.primaryEmailAddress?.emailAddress}</p>
+                                {/* <div className="flex items-center gap-1 mt-1">
                                     <div className="h-2 w-2 rounded-full bg-green-400" />
                                     <span className="text-purple-100 text-xs">Online</span>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
@@ -113,43 +109,43 @@ export function CustomUserButton() {
                 <div className="p-2 space-y-1">
                     <DropdownMenuItem
                         onClick={() => openUserProfile()}
-                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-80/100 cursor-pointer transition-all duration-200 text-gray-100 hover:text-black group"
+                        className="flex items-center gap-3 p-2 px-3 rounded-lg hover:bg-white cursor-pointer transition-all duration-200 text-gray-100 hover:text-black group"
                     >
                         <div className="p-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 group-hover:from-purple-500 group-hover:to-pink-500 transition-all duration-200">
-                            <User className="h-4 w-4 text-white" />
+                            <User className="h-3 w-3 text-white" />
                         </div>
                         <div className="flex-1">
-                            <span className="text-sm font-medium">Manage Account</span>
+                            <span className="text-xs font-medium">Manage Account</span>
                             <p className="text-xs text-gray-400 hover:text-black">Update your profile settings</p>
                         </div>
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-80/100 cursor-pointer transition-all duration-200 text-gray-100 hover:text-black group">
+                    <DropdownMenuItem className="flex items-center gap-3 p-2 px-3 rounded-lg hover:bg-white cursor-pointer transition-all duration-200 text-gray-100 hover:text-black group">
                         <div className="p-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 group-hover:from-blue-500 group-hover:to-purple-500 transition-all duration-200">
-                            <ShoppingBag className="h-4 w-4 text-white" />
+                            <ShoppingBag className="h-3 w-3 text-white" />
                         </div>
                         <div className="flex-1">
-                            <span className="text-sm font-medium">My Orders</span>
+                            <span className="text-xs font-medium">My Orders</span>
                             <p className="text-xs text-gray-400 hover:text-black">Track your flower deliveries</p>
                         </div>
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-80/100 cursor-pointer transition-all duration-200 text-gray-100 hover:text-black group">
+                    <DropdownMenuItem className="flex items-center gap-3 p-2 px-3 rounded-lg hover:bg-white cursor-pointer transition-all duration-200 text-gray-100 hover:text-black group">
                         <div className="p-1.5 rounded-lg bg-gradient-to-r from-pink-600 to-rose-600 group-hover:from-pink-500 group-hover:to-rose-500 transition-all duration-200">
-                            <Heart className="h-4 w-4 text-white" />
+                            <Heart className="h-3 w-3 text-white" />
                         </div>
                         <div className="flex-1">
-                            <span className="text-sm font-medium">Wishlist</span>
+                            <span className="text-xs font-medium">Wishlist</span>
                             <p className="text-xs text-gray-400 hover:text-black">Your saved bouquets</p>
                         </div>
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-80/100 cursor-pointer transition-all duration-200 text-gray-100 hover:text-black group">
+                    <DropdownMenuItem className="flex items-center gap-3 p-2 px-3 rounded-lg hover:bg-white cursor-pointer transition-all duration-200 text-gray-100 hover:text-black group">
                         <div className="p-1.5 rounded-lg bg-gradient-to-r from-gray-600 to-gray-700 group-hover:from-gray-500 group-hover:to-gray-600 transition-all duration-200">
-                            <Settings className="h-4 w-4 text-white" />
+                            <Settings className="h-3 w-3 text-white" />
                         </div>
                         <div className="flex-1">
-                            <span className="text-sm font-medium">Preferences</span>
+                            <span className="text-xs font-medium">Preferences</span>
                             <p className="text-xs text-gray-400 hover:text-black">Customize your experience</p>
                         </div>
                     </DropdownMenuItem>
@@ -161,13 +157,13 @@ export function CustomUserButton() {
                 <div className="p-2">
                     <DropdownMenuItem
                         onClick={() => signOut({ redirectUrl: `/vi` })}
-                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-gradient-to-r hover:from-red-800/50 hover:to-red-700/10 cursor-pointer transition-all duration-200 text-gray-100 hover:text-black group"
+                        className="flex items-center gap-3 p-2 px-3 rounded-lg hover:bg-gradient-to-r hover:from-red-800/50 hover:to-red-700/40 cursor-pointer transition-all duration-200 text-gray-100 hover:text-black group"
                     >
-                        <div className="p-1.5 rounded-lg bg-gradient-to-r from-red-600 to-red-700 group-hover:from-red-500 group-hover:to-red-600 hover:!text-black transition-all duration-200">
-                            <LogOut className="h-4 w-4 text-white" />
+                        <div className="p-1.5 rounded-lg bg-gradient-to-r from-red-600 to-red-700   transition-all duration-200">
+                            <LogOut className="h-3 w-3 text-white" />
                         </div>
                         <div className="flex-1">
-                            <span className="text-sm font-medium">Sign Out</span> 
+                            <span className="text-sm font-medium !text-white">Sign Out</span> 
                         </div>
                     </DropdownMenuItem>
                 </div>

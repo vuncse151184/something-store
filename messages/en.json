@@ -23,7 +23,8 @@
         "delivery": "Delivery",
         "cart": "Cart",
         "Search": "Search for products",
-        "buyButton": "Buy a bouget"
+        "buyButton": "Buy a bouget",
+        "signIn": "Sign In"
     },
     "NotFoundPagee": {
         "title": "Page not found",

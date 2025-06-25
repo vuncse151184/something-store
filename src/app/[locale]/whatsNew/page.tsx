@@ -116,7 +116,48 @@ const roses: Flower[] = [
 ]
 
 
-const categories = ["All", "Classic", "Pure", "Gentle", "Joyful", "Mystical", "Energetic", "Dramatic", "Warm"]
+const categories = [
+    {
+        id: "All",
+        en: "All",
+        vi: "Tất cả"
+    },
+    {
+        id: "Classic",
+        en: "Classic",
+        vi: "Cổ điển"
+    },
+    {
+        id: "Pure",
+        en: "Pure",
+        vi: "Tinh khiết"
+    },
+    {
+        id: "Gentle",
+        en: "Gentle",
+        vi: "Nhẹ nhàng"
+    },
+    {
+        id: "Joyful",
+        en: "Joyful",
+        vi: "Vui tươi"
+    },
+    {
+        id: "Mystical",
+        en: "Mystical",
+        vi: "Huyền bí"
+    },
+    {
+        id: "Energetic",
+        en: "Energetic",
+        vi: "Năng động"
+    },
+    {
+        id: "Dramatic",
+        en: "Dramatic",
+        vi: "Kịch tính"
+    }
+]
 
 type ViewMode = "grid-2" | "grid-3" | "grid-4"
 
@@ -127,7 +168,8 @@ export default function FlowerShowcase({ params }: { params: Promise<{ locale: s
     const [favorites, setFavorites] = useState<number[]>([])
     const [isOpen, setIsOpen] = useState(false)
     const [isReady, setIsReady] = useState(false)
-
+    console.log("selectedCategory", selectedCategory)
+    
     const toggleChat = () => {
         setIsOpen((prev) => !prev)
 
@@ -136,7 +178,7 @@ export default function FlowerShowcase({ params }: { params: Promise<{ locale: s
     const isHeaderInView = useInView(headerRef, { once: true })
 
     const filteredRoses = selectedCategory === "All" ? roses : roses.filter((rose) => rose.category === selectedCategory)
-
+    console.log("Filtered Roses", filteredRoses)
     const toggleFavorite = (id: number) => {
         setFavorites((prev) => (prev.includes(id) ? prev.filter((fav) => fav !== id) : [...prev, id]))
     }
@@ -179,7 +221,7 @@ export default function FlowerShowcase({ params }: { params: Promise<{ locale: s
                                         size="sm"
                                         onClick={() => onViewModeChange(mode as ViewMode)}
                                         className={clsx(
-                                            viewMode === mode ? "bg-rose-500 hover:bg-rose-600" : "bg-gray-800/50 border-gray-600 text-gray-300 hover:bg-rose-500/20"
+                                            viewMode === mode ? "bg-rose-500 hover:bg-rose-600" : "bg-gray-800/50 border-gray-600 !text-white hover:bg-rose-500/20"
                                         )}
                                     >
                                         <Icon className="h-4 w-4" />
@@ -195,29 +237,34 @@ export default function FlowerShowcase({ params }: { params: Promise<{ locale: s
                             transition={{ duration: 0.6, delay: 1 }}
                             className="flex flex-wrap justify-center gap-3 px-4 mb-16"
                         >
-                            {categories.map((category, index) => (
-                                <motion.div
-                                    key={category}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 1.2 + index * 0.1 }}
-                                >
-                                    <Button
-                                        key={category}
-                                        variant={selectedCategory === category ? "default" : "outline"}
-                                        size="sm"
-                                        onClick={() => setSelectedCategory(category)}
-                                        className={clsx(
-                                            "rounded-full px-4 py-2 text-sm",
-                                            selectedCategory === category
-                                                ? "bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600"
-                                                : "bg-gray-800/50 border-gray-600 text-gray-300 hover:bg-rose-500/20 hover:border-rose-400"
-                                        )}
+                            {categories.map((cat, index) => {
+                                const category = (locale === "vi" || locale === "en") ? cat[locale] : cat.en
+                                return (
+
+                                    <motion.div
+                                        key={cat.id}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 1.2 + index * 0.1 }}
                                     >
-                                        {category}
-                                    </Button>
-                                </motion.div>
-                            ))}
+                                        <Button
+                                            key={cat.id}
+                                            variant={selectedCategory === cat.id ? "default" : "outline"}
+                                            size="sm"
+                                            onClick={() => setSelectedCategory(cat.id)}
+                                            className={clsx(
+                                                "rounded-full px-4 py-2 text-sm",
+                                                selectedCategory === cat.id
+                                                    ? "bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600"
+                                                    : "bg-gray-800/50 border-gray-600 !text-gray-300 hover:bg-rose-500/20 hover:border-rose-400"
+                                            )}
+                                        >
+                                            {category}
+                                        </Button>
+                                    </motion.div>
+                                )
+                            })}
+
                         </motion.div>
                     </div>
 
@@ -327,7 +374,7 @@ function FlowerCard({ rose, index, locale, isFavorite, onToggleFavorite }: Flowe
 
                                 <Image
                                     src={rose.image || "/placeholder.svg"} alt={rose.name}
-                                    className="w-full h-full object-cover" 
+                                    className="w-full h-full object-cover"
                                     priority
                                     width={300}
                                     height={300}

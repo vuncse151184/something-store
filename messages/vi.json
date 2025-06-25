@@ -23,7 +23,8 @@
         "delivery": "Giao hàng",
         "cart": "Giỏ hàng",
         "Search": "Tìm kiếm sản phẩm",
-        "buyButton": "Mua ngay"
+        "buyButton": "Mua ngay",
+        "signIn": "Đăng nhập"
     },
     "NotFoundPagee": {
         "title": "Không tìm thấy",
