@@ -57,6 +57,10 @@
         "WCU-3": "Chăm sóc khách hàng",
         "WCU-des-3": "Sẵn sàng hỗ trợ và tư vấn để mang lại trải nghiệm mua sắm tốt nhất cho khách hàng.",
         "contact-us": "Liên hệ với chúng tôi"
-
+    },
+    "WhatsNew": {
+        "title": "Sản phẩm mới",
+        "description": "Khám phá những sản phẩm mới nhất của chúng tôi, được cập nhật thường xuyên để mang đến cho bạn những lựa chọn tốt nhất.",
+        "getBouquetMeaning": "Xem thông điệp"
     }
 }

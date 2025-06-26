@@ -275,20 +275,17 @@ export default function Header({ locale }: { locale: string }) {
                 )}
 
                 {/* User Authentication */}
-                {isLoaded && (
-                    <>
-                        {user ? (
-                            <div className="hidden sm:block">
-                                <CustomUserButton />
-                            </div>
-                        ) : (
-                            <Button variant="white" size="sm" className="hidden sm:block px-4 lg:px-6 rounded-3xl text-xs sm:text-sm">
-                                <Link href="/sign-in" className="tracking-tight hover:text-white transition-colors duration-300">
-                                    {t("signIn")}
-                                </Link>
-                            </Button>
-                        )}
-                    </>
+
+                {user ? (
+                    <div className="hidden sm:block">
+                        <CustomUserButton />
+                    </div>
+                ) : (
+                    <Button variant="white" size="sm" className="hidden sm:block px-4 lg:px-6 rounded-3xl text-xs sm:text-sm">
+                        <Link href="/sign-in" className="tracking-tight hover:text-white transition-colors duration-300">
+                            {t("signIn")}
+                        </Link>
+                    </Button>
                 )}
             </div>
         </div>

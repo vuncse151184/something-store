@@ -82,7 +82,7 @@ export function CustomUserButton() {
                                     </AvatarFallback>
                                 </Avatar>
                                 {/* Sparkle effect */}
-                                <Sparkles className="absolute -top-1 -right-1 h-4 w-4 text-yellow-300 animate-pulse" />
+                                {/* <Sparkles className="absolute -top-1 -right-1 h-4 w-4 text-yellow-300 animate-pulse" /> */}
                             </div>
 
                             <div className="flex-1 min-w-0">

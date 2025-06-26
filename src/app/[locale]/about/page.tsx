@@ -10,6 +10,7 @@ export default function AboutPage({ params }: { params: Promise<{ locale: string
     const { locale } = use(params); // Unwrap the Promise to get the locale
     console.log("Locale:", locale); // Log the locale for debugging
     const t = useTranslations("AboutUs")
+    console.log("Translations:", t('story-description')); // Log translations for debugging
     return (
         <div className={`min-w-screen relative overflow-hidden`}>
             {/* Background Image */}

@@ -56,5 +56,10 @@
         "WCU-3": "Exceptional customer service",
         "WCU-des-3": "Our dedicated team is here to assist you with any questions or concerns, providing personalized service to make your experience memorable.",
         "contact-us": "Liên hệ với chúng tôi"
+    },
+    "WhatsNew": {
+        "title": "New Bouquets",
+        "description": "Khám phá những sản phẩm mới nhất của chúng tôi, được cập nhật thường xuyên để mang đến cho bạn những lựa chọn tốt nhất.",
+        "getBouquetMeaning": "See bouquet meaning"
     }
 }
