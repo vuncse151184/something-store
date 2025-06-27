@@ -163,7 +163,7 @@ export default function FloatingChat() {
           ref={buttonRef}
           onClick={toggleChat}
           size="lg"
-          className={`rounded-full w-14 h-14 shadow-lg px-0 relative bg-gradient-to-r from-purple-700 to-pink-600 hover:from-purple-800 hover:to-pink-700 border-none`}
+          className={`rounded-full w-12 h-12 shadow-lg px-0 relative bg-gradient-to-r from-purple-700 to-pink-600 hover:from-purple-800 hover:to-pink-700 border-none`}
           aria-label={isOpen ? "Close bouquet advisor" : "Open bouquet advisor"}
           aria-expanded={isOpen}
           aria-controls="chat-panel"
